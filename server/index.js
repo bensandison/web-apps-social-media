@@ -19,9 +19,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
-/*
 // http://localhost:3001/api will return a message from the server
 app.listen(PORT, () => {
   console.log("Server running on http://localhost:" + PORT)
 });
-*/
