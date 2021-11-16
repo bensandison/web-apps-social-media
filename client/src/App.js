@@ -1,18 +1,24 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
-import LoginForm from "./pages/LoginForm";
+import SignUpForm from "./pages/SignUpForm";
 
 function App() {
 	return (
 		<Router>
-			<nav>
-				<Link to="/">Home</Link>
-				<Link to="/login">Login</Link>
+			<nav className="px-3 text-xl flex flex-row justify-center">
+				<Link to="/" className="p-3 m-1 border-2">
+					Home
+				</Link>
+				<Link to="/signup" className="p-3 m-1 border-2">
+					Login
+				</Link>
 			</nav>
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/login" element={<LoginForm />} />
-			</Routes>
+			<main className="p-5 max-w-7xl mx-auto">
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/signup" element={<SignUpForm />} />
+				</Routes>
+			</main>
 		</Router>
 	);
 }
