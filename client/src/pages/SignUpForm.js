@@ -32,23 +32,23 @@ function SignUpForm() {
 				}}
 			>
 				<Form noValidate className="flex flex-col items-center">
-					<h1>Sign Up:</h1>
+					<h1 className="text-2xl font-bold">Sign Up:</h1>
 					<FormikTextInput
-						label="First Name"
+						label="First Name:"
 						name="firstName"
 						type="text"
 						placeholder="Jane"
 					/>
 
 					<FormikTextInput
-						label="Last Name"
+						label="Last Name:"
 						name="lastName"
 						type="text"
 						placeholder="Doe"
 					/>
 
 					<FormikTextInput
-						label="Email Address"
+						label="Email Address:"
 						name="email"
 						type="email"
 						placeholder="jane@formik.com"
