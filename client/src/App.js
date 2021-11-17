@@ -6,10 +6,10 @@ function App() {
 	return (
 		<Router>
 			<nav className="px-3 text-xl flex flex-row justify-center">
-				<Link to="/" className="p-3 m-1 border-2">
+				<Link to="/" className="p-3 m-1 border-2 font font-bold">
 					Home
 				</Link>
-				<Link to="/signup" className="p-3 m-1 border-2">
+				<Link to="/signup" className="p-3 m-1 border-2 font-bold">
 					Login
 				</Link>
 			</nav>

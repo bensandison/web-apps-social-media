@@ -54,7 +54,12 @@ function SignUpForm() {
 						placeholder="jane@formik.com"
 					/>
 
-					<button type="submit">Submit</button>
+					<button
+						type="submit"
+						className="m-2 p-2 border-2 border-gray-500 font-bold"
+					>
+						Submit
+					</button>
 				</Form>
 			</Formik>
 		</div>

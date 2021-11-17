@@ -15,7 +15,7 @@ function FormikTextInput(props) {
 				) : null}
 			</div>
 			<input
-				className="w-full border-2 border-gray-500 py-1 px-2"
+				className="w-full border-2 rounded-md border-gray-500 py-1 px-2"
 				{...field}
 				{...props}
 			/>
