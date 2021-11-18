@@ -20,7 +20,7 @@ app.get("/api", (req, res) => {
 });
 
 //Require API modules
-require("./modules/signup.js")(app);
+require("./modules/signUp.js")(app);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {
