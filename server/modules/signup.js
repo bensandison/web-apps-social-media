@@ -5,8 +5,7 @@ module.exports = function signUp(app) {
 	});
 
 	app.post("/api/signup", function (req, res) {
-		res.json({
-			message: "hello???",
-		});
+		console.log(req.body);
+		res.send("hello world");
 	});
 };

@@ -1,8 +1,14 @@
 // server/index.js
 const path = require("path");
+const bp = require("body-parser");
 const express = require("express");
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+//pass the bp.json() and the bp.urlencoded({ extended: true }) to the application-level middleware:
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: true }));
 
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, "../client/build")));
