@@ -1,3 +1,5 @@
+const dataBase = require("./dataBase");
+
 module.exports = function signUp(app) {
 	//Handle get requests to /api route
 	app.get("/api/signup", (req, res) => {
@@ -5,7 +7,7 @@ module.exports = function signUp(app) {
 	});
 
 	app.post("/api/signup", function (req, res) {
-		console.log(req.body);
-		res.send("hello world");
+		res.json(req.body);
+		dataBase.connect();
 	});
 };
