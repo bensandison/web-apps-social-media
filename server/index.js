@@ -7,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 //pass the bp.json() and the bp.urlencoded({ extended: true }) to the application-level middleware:
+//this means we can: console.log(req.body);
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
@@ -18,6 +19,7 @@ app.get("/api", (req, res) => {
 	res.json({ message: "Hello from server!" });
 });
 
+//Require API modules
 require("./modules/signup.js")(app);
 
 // All other GET requests not handled before will return our React app
