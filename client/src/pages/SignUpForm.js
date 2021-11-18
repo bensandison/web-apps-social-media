@@ -27,7 +27,7 @@ function SignUpForm() {
 				})}
 				onSubmit={(values, { setSubmitting }) => {
 					setTimeout(() => {
-						Axios.post("https://localhost:3001/api/signup", values).then(
+						Axios.post("http://localhost:3001/api/signup", values).then(
 							(response) => {
 								console.log(response);
 							}
