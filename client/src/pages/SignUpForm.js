@@ -27,11 +27,9 @@ function SignUpForm() {
 				})}
 				onSubmit={(values, { setSubmitting }) => {
 					setTimeout(() => {
-						Axios.post("http://localhost:3001/api/signup", values).then(
-							(response) => {
-								console.log(response);
-							}
-						);
+						Axios.post("/api/signup", values).then((response) => {
+							console.log(response);
+						});
 						setSubmitting(false);
 					}, 400);
 				}}
