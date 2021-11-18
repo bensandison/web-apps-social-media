@@ -1,4 +1,5 @@
 import { Formik, Form } from "formik";
+import Axios from "axios";
 import * as Yup from "yup";
 
 import FormikTextInput from "../components/FormikTextInput";
@@ -26,7 +27,11 @@ function SignUpForm() {
 				})}
 				onSubmit={(values, { setSubmitting }) => {
 					setTimeout(() => {
-						alert(JSON.stringify(values, null, 2));
+						Axios.post("https://localhost:3001/api/signup", values).then(
+							(response) => {
+								console.log(response);
+							}
+						);
 						setSubmitting(false);
 					}, 400);
 				}}

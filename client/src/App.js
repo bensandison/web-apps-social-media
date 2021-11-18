@@ -10,7 +10,7 @@ function App() {
 					Home
 				</Link>
 				<Link to="/signup" className="p-3 m-1 border-2 font-bold">
-					Login
+					Sign Up
 				</Link>
 			</nav>
 			<main className="p-5 max-w-7xl mx-auto">
