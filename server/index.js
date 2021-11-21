@@ -2,7 +2,6 @@
 const path = require("path");
 const bp = require("body-parser");
 const express = require("express");
-const db = require("./modules/dataBase");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
