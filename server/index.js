@@ -6,7 +6,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-//pass the bp.json() and the bp.urlencoded({ extended: true }) to the application-level middleware:
+//add body parser middleware module to express app:
 //this means we can: console.log(req.body);
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
