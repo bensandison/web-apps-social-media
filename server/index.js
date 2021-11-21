@@ -2,6 +2,7 @@
 const path = require("path");
 const bp = require("body-parser");
 const express = require("express");
+const db = require("./modules/dataBase");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,7 +21,7 @@ app.get("/api", (req, res) => {
 });
 
 //Require API modules
-require("./modules/signUp.js")(app);
+require("./modules/users.js")(app); //Users
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {
