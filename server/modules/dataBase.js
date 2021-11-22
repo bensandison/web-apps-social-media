@@ -19,11 +19,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             CONSTRAINT email_unique UNIQUE (email)
             )`,
 			(err) => {
-				if (err) {
-					// Table already created
-				} else {
-					console.log("Table Created!");
-				}
+				if (!err) console.log("Table Created!");
 			}
 		);
 	}

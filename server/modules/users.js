@@ -81,23 +81,18 @@ function users(app) {
 	});
 
 	//Update a user:
-	//TODO: add more security for this - users should not be able to update pw and email together
 	app.patch("/api/users/:id", (req, res) => {
 		const data = {
 			name: req.body.name,
 			email: req.body.email,
-			password: req.body.password
-				? bcrypt.hashSync(req.body.password, saltRounds) //May want to change this for async hash in future
-				: null, //hash pw if it was sent
 		};
 		db.run(
 			// COALESENCE function returns the first argument that is not null
 			`UPDATE user set 
 					name = COALESCE(?,name), 
 					email = COALESCE(?,email), 
-					password = COALESCE(?,password) 
 					WHERE id = ?`,
-			[data.name, data.email, data.password, req.params.id],
+			[data.name, data.email, req.params.id],
 			function (err, result) {
 				if (err) {
 					res.status(400).json({ error: res.message });
