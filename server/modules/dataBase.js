@@ -1,6 +1,5 @@
-var sqlite3 = require("sqlite3").verbose(); //verbose modifier gives additional info for debugging
-var md5 = require("md5"); //used for hashing stored passwords
-//TODO: update to bcrypt for better security
+const sqlite3 = require("sqlite3").verbose(); //verbose modifier gives additional info for debugging
+const bcrypt = require("bcrypt");
 
 const DBSOURCE = "db.sqlite"; //stores file name of db
 
@@ -11,7 +10,6 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 		console.error(err.message);
 		throw err;
 	} else {
-		console.log("Connected to the SQLite database.");
 		db.run(
 			`CREATE TABLE user (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,10 +23,22 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 					// Table already created
 				} else {
 					// Table just created now, creating some rows:
-					var insert =
+					const insert =
 						"INSERT INTO user (name, email, password) VALUES (?,?,?)";
-					db.run(insert, ["admin", "admin@example.com", md5("admin123456")]);
-					db.run(insert, ["user", "user@example.com", md5("user123456")]);
+					bcrypt.hash("adminpass", saltRounds, function (err, hash) {
+						if (err) {
+							console.error(err);
+							throw err;
+						}
+						db.run(insert, ["admin", "admin@example.com", hash]);
+					});
+					bcrypt.hash("userpass", saltRounds, function (err, hash) {
+						if (err) {
+							console.error(err);
+							throw err;
+						}
+						db.run(insert, ["user", "user@example.com", hash]);
+					});
 				}
 			}
 		);
