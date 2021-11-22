@@ -10,53 +10,51 @@ function SignUpForm() {
 		<div className="max-w-lg mx-auto shadow-2xl p-5">
 			<Formik
 				initialValues={{
-					firstName: "",
-					lastName: "",
+					name: "",
 					email: "",
+					password: "",
 				}}
 				validationSchema={Yup.object({
-					firstName: Yup.string()
-						.max(15, "Must be 15 characters or less")
-						.required("Required"),
-					lastName: Yup.string()
-						.max(20, "Must be 20 characters or less")
-						.required("Required"),
+					name: Yup.string()
+						.required("Username Required")
+						.max(15, "15 characters or less required"),
 					email: Yup.string()
-						.email("Invalid email address")
-						.required("Required"),
+						.required("Email Required")
+						.email("Invalid email address"),
+					password: Yup.string()
+						.required("Password Required")
+						.min(8, "8 characters or more required")
+						.max(30, "30 characters or less required"),
 				})}
 				onSubmit={(values, { setSubmitting }) => {
 					setTimeout(() => {
-						Axios.post("/api/signup", values).then((response) => {
-							console.log(response);
-						});
+						Axios.post("/api/users", values)
+							.then((response) => {
+								console.log(response);
+							})
+							.catch(function (error) {
+								if (error.response) {
+									// Request made and server responded
+									console.log(error.response.data);
+									console.log(error.response.status);
+									console.log(error.response.headers);
+								} else if (error.request) {
+									// The request was made but no response was received
+									console.log(error.request);
+								} else {
+									// Something happened in setting up the request that triggered an Error
+									console.log("Error", error.message);
+								}
+							});
 						setSubmitting(false);
 					}, 400);
 				}}
 			>
 				<Form noValidate className="flex flex-col items-center">
 					<h1 className="text-2xl font-bold">Sign Up:</h1>
-					<FormikTextInput
-						label="First Name:"
-						name="firstName"
-						type="text"
-						placeholder="Jane"
-					/>
-
-					<FormikTextInput
-						label="Last Name:"
-						name="lastName"
-						type="text"
-						placeholder="Doe"
-					/>
-
-					<FormikTextInput
-						label="Email Address:"
-						name="email"
-						type="email"
-						placeholder="jane@formik.com"
-					/>
-
+					<FormikTextInput label="User Name:" name="name" type="text" />
+					<FormikTextInput label="Email Adress:" name="email" type="text" />
+					<FormikTextInput label="Password" name="password" type="text" />
 					<button
 						type="submit"
 						className="m-2 p-2 border-2 border-gray-500 font-bold"
