@@ -41,6 +41,10 @@ function users(app) {
 	app.post("/api/users/", (req, res) => {
 		let errors = [];
 		// Email and Password are required
+		if (!req.body.name) {
+			// body-parser converts req.body to js object
+			errors.push("No username specified");
+		}
 		if (!req.body.password) {
 			// body-parser converts req.body to js object
 			errors.push("No password specified");

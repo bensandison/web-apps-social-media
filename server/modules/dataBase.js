@@ -12,10 +12,10 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 	} else {
 		db.run(
 			`CREATE TABLE user (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name text, 
-            email text UNIQUE, 
-            password text, 
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            name text NOT NULL, 
+            email text NOT NULL UNIQUE, 
+            password NOT NULL text, 
             CONSTRAINT email_unique UNIQUE (email)
             )`,
 			(err) => {
