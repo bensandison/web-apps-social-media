@@ -22,23 +22,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 				if (err) {
 					// Table already created
 				} else {
-					// Table just created now, creating some rows:
-					const insert =
-						"INSERT INTO user (name, email, password) VALUES (?,?,?)";
-					bcrypt.hash("adminpass", saltRounds, function (err, hash) {
-						if (err) {
-							console.error(err);
-							throw err;
-						}
-						db.run(insert, ["admin", "admin@example.com", hash]);
-					});
-					bcrypt.hash("userpass", saltRounds, function (err, hash) {
-						if (err) {
-							console.error(err);
-							throw err;
-						}
-						db.run(insert, ["user", "user@example.com", hash]);
-					});
+					console.log("Table Created!");
 				}
 			}
 		);
