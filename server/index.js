@@ -11,9 +11,6 @@ const PORT = process.env.PORT || 3001;
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
-// Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, "../client/build")));
-
 //Handle get requests to /api route
 app.get("/api", (req, res) => {
 	res.json({ message: "Hello from server!" });
@@ -21,11 +18,6 @@ app.get("/api", (req, res) => {
 
 //Require API modules
 require("./modules/users.js")(app); //Users
-
-// All other GET requests not handled before will return our React app
-app.get("*", (req, res) => {
-	res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-});
 
 // http://localhost:3001/api will return a message from the server
 app.listen(PORT, () => {
