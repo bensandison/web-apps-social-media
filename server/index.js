@@ -2,6 +2,7 @@
 const path = require("path");
 const bp = require("body-parser");
 const express = require("express");
+const routes = require("./routes");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -11,13 +12,14 @@ const PORT = process.env.PORT || 3001;
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
+app.use("/api", routes);
+
 //Handle get requests to /api route
 app.get("/api", (req, res) => {
 	res.json({ message: "Hello from server!" });
 });
 
-//Require API modules
-require("./modules/users.js")(app); //Users
+
 
 // http://localhost:3001/api will return a message from the server
 app.listen(PORT, () => {
