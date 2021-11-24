@@ -7,15 +7,14 @@ function FormikTextInput(props) {
 	const [field, meta] = useField(props);
 
 	return (
-		<div className="my-1 w-full max-w-sm font-bold">
-			<div className="flex justify-between">
+		<div>
+			<div>
 				<label htmlFor={props.id || props.name}>{props.label}</label>
 				{meta.touched && meta.error ? (
-					<div className="text-red-600">{meta.error}</div>
+					<div>{meta.error}</div>
 				) : null}
 			</div>
 			<input
-				className="w-full border-2 rounded-md border-gray-500 py-1 px-2"
 				{...field}
 				{...props}
 			/>

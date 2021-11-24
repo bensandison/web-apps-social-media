@@ -5,15 +5,15 @@ import SignUpForm from "./pages/SignUpForm";
 function App() {
 	return (
 		<Router>
-			<nav className="px-3 text-xl flex flex-row justify-center">
-				<Link to="/" className="p-3 m-1 border-2 font font-bold">
+			<nav>
+				<Link to="/">
 					Home
 				</Link>
-				<Link to="/signup" className="p-3 m-1 border-2 font-bold">
+				<Link to="/signup">
 					Sign Up
 				</Link>
 			</nav>
-			<main className="p-5 max-w-7xl mx-auto">
+			<main>
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/signup" element={<SignUpForm />} />

@@ -7,7 +7,7 @@ import FormikTextInput from "../components/FormikTextInput";
 // And now we can use these
 function SignUpForm() {
 	return (
-		<div className="max-w-lg mx-auto shadow-2xl p-5">
+		<div>
 			<Formik
 				initialValues={{
 					name: "",
@@ -50,14 +50,13 @@ function SignUpForm() {
 					}, 400);
 				}}
 			>
-				<Form noValidate className="flex flex-col items-center">
-					<h1 className="text-2xl font-bold">Sign Up:</h1>
+				<Form noValidate>
+					<h1>Sign Up:</h1>
 					<FormikTextInput label="User Name:" name="name" type="text" />
 					<FormikTextInput label="Email Adress:" name="email" type="text" />
 					<FormikTextInput label="Password" name="password" type="text" />
 					<button
 						type="submit"
-						className="m-2 p-2 border-2 border-gray-500 font-bold"
 					>
 						Submit
 					</button>
