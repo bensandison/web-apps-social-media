@@ -3,7 +3,7 @@ import Axios from "axios";
 import * as Yup from "yup";
 
 import FormikTextInput from "../components/FormikTextInput";
-import { Button } from "@material-ui/core";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
 
 const initialFormState = {
 	name: "",
@@ -49,20 +49,25 @@ function submitData(values, setSubmitting) {
 // And now we can use these
 function SignUpForm() {
 	return (
-		<Formik
-			initialValues={{ ...initialFormState }}
-			validationSchema={yupSchema}
-			onSubmit={(values) => {
-				console.log(values);
-			}}
-		>
-			<Form>
-				<FormikTextInput name="name" label="User Name:" />
-				<FormikTextInput name="email" label="Email Adress:" />
-				<FormikTextInput name="password" label="Password:" />
-				<Button type="submit">Submit</Button>
-			</Form>
-		</Formik>
+		<Container maxWidth="xs" padding={2}>
+			<Typography variant="h4">Sign Up:</Typography>
+			<Formik
+				initialValues={{ ...initialFormState }}
+				validationSchema={yupSchema}
+				onSubmit={(values) => {
+					console.log(values);
+				}}
+			>
+				<Form>
+					<Stack spacing={2}>
+						<FormikTextInput name="name" label="User Name:" />
+						<FormikTextInput name="email" label="Email Adress:" />
+						<FormikTextInput name="password" label="Password:" />
+						<Button type="submit">Submit</Button>
+					</Stack>
+				</Form>
+			</Formik>
+		</Container>
 	);
 }
 
