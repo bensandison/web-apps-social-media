@@ -1,25 +1,22 @@
+import React from "react";
+import { TextField } from "@material-ui/core";
 import { useField } from "formik";
 
-function FormikTextInput(props) {
-	// useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-	// which we can spread on <input>. We can use field meta to show an error
-	// message if the field is invalid and it has been touched (i.e. visited)
-	const [field, meta] = useField(props);
+const FormikTextInput = ({ name, ...otherProps }) => {
+	const [field, mata] = useField(name);
 
-	return (
-		<div>
-			<div>
-				<label htmlFor={props.id || props.name}>{props.label}</label>
-				{meta.touched && meta.error ? (
-					<div>{meta.error}</div>
-				) : null}
-			</div>
-			<input
-				{...field}
-				{...props}
-			/>
-		</div>
-	);
-}
+	const configTextfield = {
+		...field,
+		...otherProps,
+		variant: "outlined",
+	};
+
+	if (mata && mata.touched && mata.error) {
+		configTextfield.error = true;
+		configTextfield.helperText = mata.error;
+	}
+
+	return <TextField {...configTextfield} />;
+};
 
 export default FormikTextInput;
