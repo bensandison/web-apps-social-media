@@ -6,15 +6,11 @@ import FormikTextInput from "../components/FormikTextInput";
 import { Button, Container, Stack, Typography } from "@mui/material";
 
 const initialFormState = {
-	name: "",
 	email: "",
 	password: "",
 };
 
 const yupSchema = Yup.object({
-	name: Yup.string()
-		.required("Username Required")
-		.max(15, "15 characters or less required"),
 	email: Yup.string().required("Email Required").email("Invalid email address"),
 	password: Yup.string()
 		.required("Password Required")
@@ -24,7 +20,7 @@ const yupSchema = Yup.object({
 
 function submitData(values) {
 	setTimeout(() => {
-		Axios.post("/api/users", values)
+		Axios.post("/api/session", values)
 			.then((response) => {
 				console.log(response);
 			})
@@ -47,10 +43,10 @@ function submitData(values) {
 }
 
 // And now we can use these
-function SignUpForm() {
+function LogInForm() {
 	return (
 		<Container maxWidth="xs" padding={2}>
-			<Typography variant="h4">Sign Up:</Typography>
+			<Typography variant="h4">Log In:</Typography>
 			<Formik
 				initialValues={{ ...initialFormState }}
 				validationSchema={yupSchema}
@@ -60,7 +56,6 @@ function SignUpForm() {
 			>
 				<Form>
 					<Stack spacing={2}>
-						<FormikTextInput name="name" label="User Name:" />
 						<FormikTextInput name="email" label="Email Adress:" />
 						<FormikTextInput name="password" label="Password:" />
 						<Button variant="contained" type="submit">Submit</Button>
@@ -71,4 +66,4 @@ function SignUpForm() {
 	);
 }
 
-export default SignUpForm;
+export default LogInForm;

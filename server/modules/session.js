@@ -22,7 +22,7 @@ function createSession(req, res) {
 		} else {
 			res.json(result);
 		}
-	});
+	})
 }
 
 //TODO: add catch for errors
