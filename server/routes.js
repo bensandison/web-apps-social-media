@@ -22,6 +22,6 @@ router.delete("/users", deleteUser);
 router.post("/session", createSession);
 
 //Posts Route
-router.post("/posts/:id", createPost);
+router.post("/posts", createPost);
 
 module.exports = router;

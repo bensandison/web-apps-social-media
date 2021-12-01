@@ -4,7 +4,7 @@ function createPost(req, res) {
     let errors = [];
     //get data
     let data = {
-        "id" : [req.params.id],
+        "id" : req.body.id,
         "title" : req.body.title,
         "body" : req.body.body,
     }
