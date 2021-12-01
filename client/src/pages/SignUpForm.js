@@ -3,7 +3,7 @@ import Axios from "axios";
 import * as Yup from "yup";
 
 import FormikTextInput from "../components/FormikTextInput";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { Button, Container, Stack, Typography } from "@mui/material";
 
 const initialFormState = {
 	name: "",
@@ -22,7 +22,7 @@ const yupSchema = Yup.object({
 		.max(30, "30 characters or less required"),
 });
 
-function submitData(values, setSubmitting) {
+function submitData(values) {
 	setTimeout(() => {
 		Axios.post("/api/users", values)
 			.then((response) => {
@@ -42,7 +42,7 @@ function submitData(values, setSubmitting) {
 					console.log("Error", error.message);
 				}
 			});
-		setSubmitting(false);
+		// setSubmitting(false);
 	}, 400);
 }
 
@@ -55,7 +55,7 @@ function SignUpForm() {
 				initialValues={{ ...initialFormState }}
 				validationSchema={yupSchema}
 				onSubmit={(values) => {
-					console.log(values);
+					submitData(values);
 				}}
 			>
 				<Form>
