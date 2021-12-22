@@ -5,7 +5,7 @@ const {
 	updateUser,
 	deleteUser,
 } = require("./modules/users");
-const { createSession } = require("./modules/session");
+const { createSession, findByToken } = require("./modules/session");
 const {createPost} = require("./modules/posts");
 
 const express = require("express");
@@ -20,6 +20,7 @@ router.delete("/users", deleteUser);
 
 //Session Route
 router.post("/session", createSession);
+router.get("/session", findByToken);
 
 //Posts Route
 router.post("/posts", createPost);

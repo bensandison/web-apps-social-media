@@ -27,4 +27,18 @@ function createSession(req, res, next) {
 	});
 }
 
-module.exports = { createSession };
+//Get User Data from Token
+function findByToken(req, res, next) {
+	db.get(
+		"SELECT * FROM use WHERE token = ?",
+		req.body.token,
+		function (err, row) {
+			if (err) return next(err); //database.get fails
+			//for empty user data:
+			if (!row) return next(new Error("No user data for this token"));
+			else res.json(row); // respond with user data
+		}
+	);
+}
+
+module.exports = { createSession, findByToken };
