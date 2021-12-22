@@ -1,6 +1,6 @@
 const db = require("./dataBase");
 
-function createPost(req, res) {
+function createPost(req, res, next) {
 	let errors = [];
 	//get data
 	let data = {
@@ -24,11 +24,7 @@ function createPost(req, res) {
 	const params = [data.id, data.title, data.body];
 	db.run(sql, params, function (err, result) {
 		//need to use ES5 function so we can access "this.lastID"
-		if (err) {
-			console.log(err);
-			res.status(400).json({ error: err.message });
-			return;
-		}
+		if (err) return next(err);
 		res.json({
 			message: "post success",
 			data: data,
