@@ -3,15 +3,12 @@ const db = require("./database.js");
 saltRounds = 10;
 
 // GET: api/users
-function getUsers(req, res) {
+function getUsers(req, res, next) {
 	//TODO: Remove passwords from here
 	const sql = "select * from user";
 	let params = [];
 	db.all(sql, params, (err, rows) => {
-		if (err) {
-			res.status(400).json({ error: err.message });
-			return;
-		}
+		if (err) return next(err);
 		res.json({
 			message: "success",
 			data: rows,
@@ -25,10 +22,8 @@ function getUserById(req, res) {
 	let params = [req.params.id]; //ID is a special Express.js endpoint with a variable expression
 	// E.g: a request using /api/user/1 will filter the query using id = 1
 	db.get(sql, params, (err, row) => {
-		if (err) {
-			res.status(400).json({ error: err.message });
-			return;
-		}
+		if (err) return next(err);
+
 		res.json({
 			message: "success",
 			data: row,
@@ -37,7 +32,7 @@ function getUserById(req, res) {
 }
 
 // POST: api/users
-function createUser(req, res) {
+function createUser(req, res, next) {
 	let errors = [];
 	// Email and Password are required
 	if (!req.body.name) {
@@ -51,16 +46,14 @@ function createUser(req, res) {
 	if (!req.body.email) {
 		errors.push("No email specified");
 	}
+
+	// If there are errors:
 	if (errors.length) {
-		// If there are errors:
-		res.status(400).json({ error: errors.join(",") });
-		return;
+		errors = errors.join(",");
+		return next(new Error(errors));
 	}
 	bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-		if (err) {
-			console.error(err.message);
-			throw err;
-		}
+		if (err) return next(new Error(err));
 		const data = {
 			name: req.body.name,
 			email: req.body.email,
@@ -70,10 +63,7 @@ function createUser(req, res) {
 		const params = [data.name, data.email, data.password];
 		db.run(sql, params, function (err, result) {
 			//need to use ES5 function so we can access "this.lastID"
-			if (err) {
-				res.status(400).json({ error: err.message });
-				return;
-			}
+			if (err) return next(new Error(err));
 			res.json({
 				message: "success",
 				data: data,
@@ -89,6 +79,7 @@ function updateUser(req, res) {
 		name: req.body.name,
 		email: req.body.email,
 	};
+	//TODO: test this function properly
 	db.run(
 		// COALESENCE function returns the first argument that is not null
 		`UPDATE user set 
@@ -96,11 +87,8 @@ function updateUser(req, res) {
 				email = COALESCE(?,email), 
 				WHERE id = ?`,
 		[data.name, data.email, req.params.id],
-		function (err, result) {
-			if (err) {
-				res.status(400).json({ error: res.message });
-				return;
-			}
+		function (err) {
+			if (err) return next(err);
 			res.json({
 				message: "success",
 				data: data,
@@ -111,21 +99,14 @@ function updateUser(req, res) {
 }
 
 // DELETE: /api/users/id
-function deleteUser(req, res) {
-	db.run(
-		"DELETE FROM user WHERE id = ?",
-		req.params.id,
-		function (err, result) {
-			if (err) {
-				res.status(400).json({ error: res.message });
-				return;
-			}
-			res.json({
-				message: "deleted",
-				changes: this.changes, //If the user was already deleted, or the id was not found, the value will be 0
-			});
-		}
-	);
+function deleteUser(req, res, next) {
+	db.run("DELETE FROM user WHERE id = ?", req.params.id, function (err) {
+		if (err) return next(err);
+		res.json({
+			message: "deleted",
+			changes: this.changes, //If the user was already deleted, or the id was not found, the value will be 0
+		});
+	});
 }
 
 module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
