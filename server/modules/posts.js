@@ -1,7 +1,6 @@
 const db = require("./dataBase");
 
 function createPost(req, res, next) {
-	let errors = [];
 	//get data
 	let data = {
 		id: req.body.id,
@@ -11,13 +10,13 @@ function createPost(req, res, next) {
 
 	// ID, title and body are required
 	if (!data.id) {
-		errors.push("No user ID specified");
+		return next(new Error("No user ID specified"));
 	}
 	if (!data.title) {
-		errors.push("No post title specified");
+		return next(new Error("No post title specified"));
 	}
 	if (!data.body) {
-		errors.push("No post body specified");
+		return next(new Error("No post body specified"));
 	}
 
 	const sql = "INSERT INTO posts (user_id, title, body) VALUES (?,?,?)";
