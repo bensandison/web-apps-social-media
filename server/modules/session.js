@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const db = require("./database.js");
 const UUID = require("uuid");
+const { findByToken } = require("./utils");
 
 function createSession(req, res, next) {
 	db.get(
@@ -35,17 +36,11 @@ function createSession(req, res, next) {
 }
 
 //Get User Data from Token
-function findByToken(req, res, next) {
-	db.get(
-		"SELECT * FROM user WHERE token = ?",
-		req.body.token,
-		function (err, row) {
-			if (err) return next(err); //database.get fails
-			//for empty user data:
-			if (!row) return next(new Error("No user data for this token"));
-			else res.json(row); // respond with user data
-		}
-	);
+function getUserByToken(req, res, next) {
+	findByToken(req.body.token, function (err, result) {
+		if (err) return next(err);
+		else res.json(result);
+	});
 }
 
-module.exports = { createSession, findByToken };
+module.exports = { createSession, getUserByToken };
