@@ -6,7 +6,7 @@ const {
 	deleteUser,
 } = require("./modules/users");
 const { createSession, findByToken } = require("./modules/session");
-const { createPost } = require("./modules/posts");
+const { createPost, totalPosts } = require("./modules/posts");
 
 const express = require("express");
 const router = express.Router();
@@ -24,5 +24,6 @@ router.get("/session", findByToken);
 
 //Posts Route
 router.post("/posts", createPost);
+router.get("/posts/last", totalPosts);
 
 module.exports = router;

@@ -22,7 +22,7 @@ function createPost(req, res, next) {
 
 	const sql = "INSERT INTO posts (user_id, title, body) VALUES (?,?,?)";
 	const params = [data.id, data.title, data.body];
-	db.run(sql, params, function (err, result) {
+	db.run(sql, params, function (err) {
 		//need to use ES5 function so we can access "this.lastID"
 		if (err) return next(err);
 		res.json({
@@ -32,4 +32,19 @@ function createPost(req, res, next) {
 	});
 }
 
-module.exports = { createPost };
+function totalPosts(req, res, next) {
+	db.get(
+		"SELECT * FROM posts ORDER BY post_index DESC LIMIT 1",
+		[],
+		function (err, result) {
+			if (err) return next(err);
+			if (!result) return next(new Error("No result found"));
+			res.json({
+				message: "post success",
+				data: result.post_index,
+			});
+		}
+	);
+}
+
+module.exports = { createPost, totalPosts };
