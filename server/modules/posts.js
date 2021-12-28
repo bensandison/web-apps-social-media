@@ -47,4 +47,29 @@ function totalPosts(req, res, next) {
 	);
 }
 
-module.exports = { createPost, totalPosts };
+function getPosts(req, res, next) {
+	const offset = req.body.indexMax - req.body.postsNum;
+
+	// nested select statement to order posts descending:
+	db.all(
+		"SELECT * FROM ( SELECT * FROM posts ORDER BY post_index LIMIT ? OFFSET ? ) ORDER BY post_index DESC",
+		[req.body.postsNum, offset],
+		function (err, result) {
+			if (err) {
+				//check params exist:
+				if (!req.body.postsNum || !req.body.indexMax)
+					return next(
+						new Error("Must provide indexMin and postsNum parameters")
+					);
+				else return next(err);
+			}
+			if (!result) return next(new Error("No result found"));
+			res.json({
+				message: "post success",
+				data: result,
+			});
+		}
+	);
+}
+
+module.exports = { createPost, totalPosts, getPosts };
