@@ -67,21 +67,20 @@ function createUser(req, res, next) {
 }
 
 // PATCH: /api/users/:id
-function updateUser(req, res) {
+function updateUser(req, res, next) {
 	const data = {
 		name: req.body.name,
 		email: req.body.email,
 	};
-	//TODO: test this function properly
+
+	if (!data.name && !data.email)
+		return next(new Error("new name OR email must be specified"));
+
+	// COALESENCE function returns the first argument that is not null
 	db.run(
-		// COALESENCE function returns the first argument that is not null
-		`UPDATE user set 
-				name = COALESCE(?,name), 
-				email = COALESCE(?,email), 
-				WHERE id = ?`,
+		`UPDATE user set name = COALESCE(?,name), email = COALESCE(?,email) WHERE id = ?`,
 		[data.name, data.email, req.params.id],
 		function (err) {
-			if (err) console.log(err);
 			if (err) return next(err);
 			res.json({
 				data: data,
