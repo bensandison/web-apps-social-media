@@ -14,13 +14,6 @@ app.use(bp.urlencoded({ extended: true }));
 
 app.use("/api", routes);
 
-//Handle get requests to /api route
-app.get("/api", (req, res) => {
-	res.json({ message: "Hello from server!" });
-});
-
-
-
 // http://localhost:3001/api will return a message from the server
 app.listen(PORT, () => {
 	console.log("Server running on http://localhost:" + PORT);
