@@ -27,9 +27,9 @@ function createSession(req, res, next) {
 						if (err) return next(err);
 
 						row.token = token; //add token to user data
-						res.json({ data: row }); //respond with user data including new token
 					});
-				} else res.json({ data: row }); //respond with user data
+				}
+				res.json({ data: row }); //respond with user data
 			});
 		}
 	);
