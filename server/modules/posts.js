@@ -40,10 +40,7 @@ function createPost(req, res, next) {
 			[data.userID, data.userName, data.title, data.body],
 			function (err) {
 				if (err) return next(err);
-				res.json({
-					message: "post success",
-					data: data,
-				});
+				res.json({ data: data });
 			}
 		);
 	});
@@ -56,10 +53,7 @@ function totalPosts(req, res, next) {
 		function (err, result) {
 			if (err) return next(err);
 			if (!result) return next(new Error("No result found"));
-			res.json({
-				message: "post success",
-				data: result.post_index,
-			});
+			res.json({ data: result.post_index });
 		}
 	);
 }
@@ -81,10 +75,7 @@ function getPosts(req, res, next) {
 				else return next(err);
 			}
 			if (!result) return next(new Error("No result found"));
-			res.json({
-				message: "post success",
-				data: result,
-			});
+			res.json({ data: result });
 		}
 	);
 }

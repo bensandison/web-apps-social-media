@@ -27,9 +27,9 @@ function createSession(req, res, next) {
 						if (err) return next(err);
 
 						row.token = token; //add token to user data
-						res.json(row); //respond with user data including new token
+						res.json({ data: row }); //respond with user data including new token
 					});
-				} else res.json(row); //respond with user data
+				} else res.json({ data: row }); //respond with user data
 			});
 		}
 	);
@@ -39,7 +39,7 @@ function createSession(req, res, next) {
 function getUserByToken(req, res, next) {
 	findByToken(req.body.token, function (err, result) {
 		if (err) return next(err);
-		else res.json(result);
+		else res.json({ data: result });
 	});
 }
 

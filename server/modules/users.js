@@ -9,10 +9,7 @@ function getUsers(req, res, next) {
 	let params = [];
 	db.all(sql, params, (err, rows) => {
 		if (err) return next(err);
-		res.json({
-			message: "success",
-			data: rows,
-		});
+		res.json({ data: rows });
 	});
 }
 
@@ -24,10 +21,7 @@ function getUserById(req, res) {
 	db.get(sql, params, (err, row) => {
 		if (err) return next(err);
 
-		res.json({
-			message: "success",
-			data: row,
-		});
+		res.json({ data: row });
 	});
 }
 
@@ -65,7 +59,6 @@ function createUser(req, res, next) {
 			//need to use ES5 function so we can access "this.lastID"
 			if (err) return next(new Error(err));
 			res.json({
-				message: "success",
 				data: data,
 				id: this.lastID, //returning the id means they can retrive the user after creating it
 			});
@@ -88,9 +81,9 @@ function updateUser(req, res) {
 				WHERE id = ?`,
 		[data.name, data.email, req.params.id],
 		function (err) {
+			if (err) console.log(err);
 			if (err) return next(err);
 			res.json({
-				message: "success",
 				data: data,
 				changes: this.changes, //number of rows updated (can be used for verification)
 			});
@@ -103,7 +96,6 @@ function deleteUser(req, res, next) {
 	db.run("DELETE FROM user WHERE id = ?", req.params.id, function (err) {
 		if (err) return next(err);
 		res.json({
-			message: "deleted",
 			changes: this.changes, //If the user was already deleted, or the id was not found, the value will be 0
 		});
 	});
