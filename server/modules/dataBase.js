@@ -1,5 +1,4 @@
 const sqlite3 = require("sqlite3").verbose(); //verbose modifier gives additional info for debugging
-const bcrypt = require("bcrypt");
 
 const DBSOURCE = "db.sqlite"; //stores file name of db
 
