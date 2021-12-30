@@ -2,6 +2,7 @@
 const path = require("path");
 const bp = require("body-parser");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const routes = require("./routes");
 
 const app = express();
@@ -11,6 +12,9 @@ const PORT = process.env.PORT || 3001;
 //this means we can: console.log(req.body);
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
+
+//use cookie parser middleware:
+app.use(cookieParser());
 
 app.use("/api", routes);
 
