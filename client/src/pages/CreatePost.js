@@ -6,20 +6,18 @@ import FormikTextInput from "../components/FormikTextInput";
 import { Button, Container, Stack, Typography } from "@mui/material";
 
 const initialFormState = {
-	id: "",
-    title: "",
+	title: "",
 	body: "",
 };
 
 const yupSchema = Yup.object({
-	id: Yup.number("ID must be a number").required("User ID required"),
-    title: Yup.string().required("Post title required"),
+	title: Yup.string().required("Post title required"),
 	body: Yup.string().required("Post body required"),
 });
 
 function submitData(values) {
 	setTimeout(() => {
-		Axios.post( "/api/posts", values)
+		Axios.post("/api/posts", values)
 			.then((response) => {
 				console.log(response);
 			})
@@ -55,10 +53,17 @@ function CreatePost() {
 			>
 				<Form>
 					<Stack spacing={2}>
-						<FormikTextInput name="id" label="User Id:" />
 						<FormikTextInput name="title" label="Post Title:" />
-						<FormikTextInput name="body" label="Post Body:" multiline rows={5} maxRows={20} />
-						<Button variant="contained" type="submit">Submit</Button>
+						<FormikTextInput
+							name="body"
+							label="Post Body:"
+							multiline
+							rows={5}
+							maxRows={20}
+						/>
+						<Button variant="contained" type="submit">
+							Submit
+						</Button>
 					</Stack>
 				</Form>
 			</Formik>
