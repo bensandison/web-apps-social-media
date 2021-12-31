@@ -92,4 +92,18 @@ function getPosts(req, res, next) {
 	});
 }
 
+//get a all posts:
+function getAllPosts(req, res, next) {
+	// Check the user has a valid session:
+	doesTokenExist(req.cookies.token, function (err) {
+		if (err) return next(err);
+
+		db.all("SELECT * FROM posts", [], function (err, result) {
+			if (err) return next(err);
+			if (!result) return next(new Error("No result found"));
+			res.json({ data: result }); //respond with posts
+		});
+	});
+}
+
 module.exports = { createPost, totalPosts, getPosts };
