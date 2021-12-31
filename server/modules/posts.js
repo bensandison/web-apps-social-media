@@ -1,5 +1,5 @@
 const db = require("./dataBase");
-const { findByToken } = require("./utils");
+const { findByToken, doesTokenExist } = require("./utils");
 
 function createPost(req, res, next) {
 	//get data
@@ -46,16 +46,24 @@ function createPost(req, res, next) {
 	});
 }
 
+//returns the index of the most recent post:
 function totalPosts(req, res, next) {
-	db.get(
-		"SELECT * FROM posts ORDER BY post_index DESC LIMIT 1",
-		[],
-		function (err, result) {
-			if (err) return next(err);
-			if (!result) return next(new Error("No result found"));
-			res.json({ data: result.post_index });
-		}
-	);
+	//error is thrown if the token does not exist
+	doesTokenExist(req.cookies.token, function (err, result) {
+		if (err) return next(err);
+
+		//get data from most recent post
+		db.get(
+			"SELECT post_index FROM posts ORDER BY post_index DESC LIMIT 1",
+			[],
+			function (err, result) {
+				if (err) return next(err);
+				if (!result) return next(new Error("No result found"));
+				//return index of most recent post
+				res.json({ data: result.post_index });
+			}
+		);
+	});
 }
 
 function getPosts(req, res, next) {
