@@ -31,7 +31,7 @@ function createSession(req, res, next) {
 				}
 				res
 					.cookie("token", row.token, { expires: new Date(253402300000000) }) //cookie expires: Approx Friday, 31 Dec 9999 23:59:59 GMT
-					.json({ data: row }); //respond with user data
+					.json({ data: row }); //also respond with user data
 			});
 		}
 	);
@@ -41,7 +41,7 @@ function createSession(req, res, next) {
 function getUserByToken(req, res, next) {
 	findByToken(req.cookies.token, function (err, result) {
 		if (err) return next(err);
-		else res.json({ data: result });
+		else res.json({ data: result }); //respond with user data
 	});
 }
 
