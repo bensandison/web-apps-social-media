@@ -12,7 +12,7 @@ function createPost(req, res, next) {
 	};
 
 	//verify user is logged in and get user data
-	findByToken(req.body.token, function (err, result) {
+	findByToken(req.cookies.token, function (err, result) {
 		// deal with any error passed to callback
 		if (err) {
 			// ID, title and body are required:
