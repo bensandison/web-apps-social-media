@@ -66,26 +66,30 @@ function totalPosts(req, res, next) {
 	});
 }
 
+//get a range of posts from a maximum index and number of posts:
 function getPosts(req, res, next) {
-	const offset = req.body.indexMax - req.body.postsNum;
+	//error is thrown if the token does not exist
+	doesTokenExist(req.cookies.token, function (err) {
+		if (err) return next(err);
 
-	// nested select statement to order posts descending:
-	db.all(
-		"SELECT * FROM ( SELECT * FROM posts ORDER BY post_index LIMIT ? OFFSET ? ) ORDER BY post_index DESC",
-		[req.body.postsNum, offset],
-		function (err, result) {
-			if (err) {
-				//check params exist:
-				if (!req.body.postsNum || !req.body.indexMax)
-					return next(
-						new Error("Must provide indexMin and postsNum parameters")
-					);
-				else return next(err);
+		// calculate offset for sql query
+		const offset = req.body.indexMax - req.body.postsNum;
+		// nested select statement to order posts descending:
+		db.all(
+			"SELECT * FROM ( SELECT * FROM posts ORDER BY post_index LIMIT ? OFFSET ? ) ORDER BY post_index DESC",
+			[req.body.postsNum, offset],
+			function (err, result) {
+				if (err) {
+					//check params exist:
+					if (!req.body.postsNum || !req.body.indexMax)
+						return next(new Error("Missing parameters"));
+					else return next(err);
+				}
+				if (!result) return next(new Error("No result found"));
+				res.json({ data: result }); //respond with posts
 			}
-			if (!result) return next(new Error("No result found"));
-			res.json({ data: result });
-		}
-	);
+		);
+	});
 }
 
 module.exports = { createPost, totalPosts, getPosts };
