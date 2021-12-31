@@ -58,7 +58,7 @@ function CreatePost() {
 							name="body"
 							label="Post Body:"
 							multiline
-							rows={5}
+							minRows={5}
 							maxRows={20}
 						/>
 						<Button variant="contained" type="submit">
