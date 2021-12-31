@@ -29,7 +29,9 @@ function createSession(req, res, next) {
 						row.token = token; //add token to user data
 					});
 				}
-				res.json({ data: row }); //respond with user data
+				res
+					.cookie("token", row.token, { expires: new Date(253402300000000) }) //cookie expires: Approx Friday, 31 Dec 9999 23:59:59 GMT
+					.json({ data: row }); //respond with user data
 			});
 		}
 	);
@@ -37,7 +39,7 @@ function createSession(req, res, next) {
 
 //Get User Data from Token
 function getUserByToken(req, res, next) {
-	findByToken(req.body.token, function (err, result) {
+	findByToken(req.cookies.token, function (err, result) {
 		if (err) return next(err);
 		else res.json({ data: result });
 	});
