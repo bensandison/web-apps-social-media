@@ -106,4 +106,4 @@ function getAllPosts(req, res, next) {
 	});
 }
 
-module.exports = { createPost, totalPosts, getPosts };
+module.exports = { createPost, totalPosts, getPosts, getAllPosts };

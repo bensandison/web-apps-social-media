@@ -6,7 +6,12 @@ const {
 	deleteUser,
 } = require("./modules/users");
 const { createSession, getUserByToken } = require("./modules/session");
-const { createPost, totalPosts, getPosts } = require("./modules/posts");
+const {
+	createPost,
+	totalPosts,
+	getPosts,
+	getAllPosts,
+} = require("./modules/posts");
 
 const express = require("express");
 const router = express.Router();
@@ -26,5 +31,6 @@ router.get("/session", getUserByToken);
 router.post("/posts", createPost);
 router.get("/posts/last", totalPosts);
 router.get("/posts", getPosts);
+router.get("/posts/all", getAllPosts);
 
 module.exports = router;
