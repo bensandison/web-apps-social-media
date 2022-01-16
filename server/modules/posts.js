@@ -98,11 +98,15 @@ function getAllPosts(req, res, next) {
 	doesTokenExist(req.cookies.token, function (err) {
 		if (err) return next(err);
 
-		db.all("SELECT * FROM posts", [], function (err, result) {
-			if (err) return next(err);
-			if (!result) return next(new Error("No result found"));
-			res.json({ data: result }); //respond with posts
-		});
+		db.all(
+			"SELECT * FROM posts ORDER BY post_index DESC",
+			[],
+			function (err, result) {
+				if (err) return next(err);
+				if (!result) return next(new Error("No result found"));
+				res.json({ data: result }); //respond with posts
+			}
+		);
 	});
 }
 
