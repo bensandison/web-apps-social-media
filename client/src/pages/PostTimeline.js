@@ -6,21 +6,23 @@ import Axios from "axios";
 function PostTimeline() {
 	const [postData, setPostData] = useState();
 
-	useEffect(() => {
+	function getData() {
 		Axios.get("/api/posts/all").then(function (response) {
 			setPostData(response.data.data);
-			console.log("hi");
 		});
-	}, []);
+	}
 
-	const postComponents = postData?.map((data, index) => (
-		<Post data={data} key={index}></Post>
-	));
+	//runs on first render
+	useEffect(() => {
+		getData();
+	}, []);
 
 	return (
 		<Container maxWidth="xs" padding={2}>
 			<Typography variant="h3">Post Timeline</Typography>
-			{postComponents}
+			{postData?.map((data, index) => (
+				<Post data={data} key={index}></Post>
+			))}
 		</Container>
 	);
 }
