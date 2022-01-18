@@ -12,7 +12,7 @@ const {
 	getPosts,
 	getAllPosts,
 } = require("./modules/posts");
-const { uploadImage } = require("./modules/upload");
+const { upload } = require("./modules/upload");
 
 const express = require("express");
 const router = express.Router();
@@ -29,12 +29,9 @@ router.post("/session", createSession);
 router.get("/session", getUserByToken);
 
 //Posts Route
-router.post("/posts", createPost);
+router.post("/posts", upload.single("image"), createPost);
 router.get("/posts/last", totalPosts);
 router.get("/posts", getPosts);
 router.get("/posts/all", getAllPosts);
-
-//Uploads Route
-router.post("/upload", uploadImage);
 
 module.exports = router;

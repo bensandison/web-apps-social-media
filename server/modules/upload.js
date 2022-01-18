@@ -1,31 +1,26 @@
 const multer = require("multer");
 
-const upload = multer({
-	dest: "temp-uploads/",
-	// you might also want to set some limits: https://github.com/expressjs/multer#limits
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, "./uploads");
+	},
+	filename: function (req, file, cb) {
+		cb(null, Date.now() + "--" + file.originalname);
+	},
 });
 
-function uploadImage(req, res, next) {
-	// Call multer middleware function
-	upload.single("file"),
-		(req, res) => {
-			const tempPath = req.file.path;
-			//Need to go up a directory for the uploads folder so use "../"
-			const targetPath = path.join(__dirname, "../uploads", "/image.png");
+const fileFilter = (req, file, cb) => {
+	if (
+		file.mimetype.includes("jpeg") ||
+		file.mimetype.includes("png") ||
+		file.mimetype.includes("jpg")
+	) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
 
-			//Check filetype
-			if (path.extname(req.file.originalname).toLowerCase() === ".png") {
-				fs.rename(tempPath, targetPath, (err) => {
-					if (err) return next(err);
-					res.json({ message: "file uploaded" });
-				});
-			} else {
-				fs.unlink(tempPath, (err) => {
-					if (err) return next(err);
-					return next(new Error("Only .png files are allowed"));
-				});
-			}
-		};
-}
+let upload = multer({ storage: storage, fileFilter: fileFilter });
 
-module.exports = { uploadImage };
+module.exports = { upload };
