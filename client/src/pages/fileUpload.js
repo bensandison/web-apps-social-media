@@ -17,7 +17,8 @@ size: `${values.file.size} bytes`,
 const FileUpload = (props) => {
 	function submitData(values) {}
 
-	const [showUpload, setShowUpload] = useState(false);
+	const [showUpload, setShowUpload] = useState(false); //defines if imageUpload should be hidden
+
 	return (
 		<div className="container">
 			<Formik
@@ -29,12 +30,14 @@ const FileUpload = (props) => {
 				onSubmit={(values) => {
 					submitData(values);
 				}}
+				// Title and body are required
 				validationSchema={yup.object().shape({
 					title: yup.string().required("Post title required"),
 					body: yup.string().required("Post body required"),
 					file: yup.mixed(),
 				})}
-				render={({ values, handleSubmit, setFieldValue }) => {
+			>
+				{({ values, handleSubmit, setFieldValue }) => {
 					return (
 						<form onSubmit={handleSubmit}>
 							<Stack spacing={2}>
@@ -46,30 +49,36 @@ const FileUpload = (props) => {
 									minRows={5}
 									maxRows={20}
 								/>
-								{showUpload && (
-									<div>
-										<label htmlFor="file">File upload</label>
-										<input
-											id="file"
-											name="file"
-											type="file"
-											onChange={(event) => {
-												setFieldValue("file", event.currentTarget.files[0]);
+								{
+									//Conditional rendering:
+									showUpload && (
+										<div>
+											<label htmlFor="file">File upload</label>
+											<input
+												id="file"
+												name="file"
+												type="file"
+												onChange={(event) => {
+													setFieldValue("file", event.currentTarget.files[0]);
+												}}
+											/>
+											<Thumb file={values.file} />
+										</div>
+									)
+								}
+								{
+									//Conditional rendering
+									!showUpload && (
+										<Button
+											variant="outlined"
+											onClick={() => {
+												setShowUpload(true);
 											}}
-										/>
-										<Thumb file={values.file} />
-									</div>
-								)}
-								{!showUpload && (
-									<Button
-										variant="outlined"
-										onClick={() => {
-											setShowUpload(true);
-										}}
-									>
-										Add Image
-									</Button>
-								)}
+										>
+											Add Image
+										</Button>
+									)
+								}
 								<Button variant="outlined" type="submit">
 									Submit
 								</Button>
@@ -77,11 +86,12 @@ const FileUpload = (props) => {
 						</form>
 					);
 				}}
-			/>
+			</Formik>
 		</div>
 	);
 };
 
+// This component is used to display image thumbnails:
 class Thumb extends React.Component {
 	state = {
 		loading: false,
