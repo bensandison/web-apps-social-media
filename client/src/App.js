@@ -5,6 +5,7 @@ import LogInForm from "./pages/LogInForm";
 import SignUpForm from "./pages/SignUpForm";
 import CreatePost from "./pages/CreatePost";
 import PostTimeline from "./pages/PostTimeline";
+import FileUpload from "./pages/fileUpload";
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 					<Link to="/login">Log In</Link>
 					<Link to="/post">Create Post</Link>
 					<Link to="/timeline">Post Timeline</Link>
+					<Link to="/upload">Upload</Link>
 				</nav>
 				<main>
 					<Routes>
@@ -24,6 +26,7 @@ function App() {
 						<Route path="/login" element={<LogInForm />} />
 						<Route path="/post" element={<CreatePost />} />
 						<Route path="/timeline" element={<PostTimeline />} />
+						<Route path="/upload" element={<FileUpload />} />
 					</Routes>
 				</main>
 			</Router>
