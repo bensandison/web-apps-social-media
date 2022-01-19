@@ -30,10 +30,18 @@ function PostTimeline() {
 function Post(props) {
 	const data = props.data;
 	return (
-		<Card>
+		<Card sx={{ my: 2 }}>
 			<Typography variant="subtitle">{data.user_name}</Typography>
 			<Typography variant="h4">{data.title}</Typography>
 			<Typography variant="body1">{data.body}</Typography>
+			{data.image_name && (
+				//if image provided:
+				<img
+					src={"/uploads/" + data.image_name}
+					alt={data.title}
+					height="200"
+				/>
+			)}
 		</Card>
 	);
 }
