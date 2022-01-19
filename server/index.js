@@ -16,6 +16,8 @@ app.use(bp.urlencoded({ extended: true }));
 //use cookie parser middleware:
 app.use(cookieParser());
 
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api", routes);
 
 // http://localhost:3001/api will return a message from the server
