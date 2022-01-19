@@ -2,42 +2,31 @@ const db = require("./dataBase");
 const { findByToken, doesTokenExist } = require("./utils");
 
 function createPost(req, res, next) {
-	//get data
-	let data = {
-		token: req.body.token,
-		title: req.body.title,
-		body: req.body.body,
-		userID: null,
-		userName: null,
-	};
-
-	//verify user is logged in and get user data
+	// Verify user is logged in and get user data:
 	findByToken(req.cookies.token, function (err, result) {
-		// deal with any error passed to callback
-		if (err) {
-			// ID, title and body are required:
-			if (!data.token) {
-				return next(new Error("No user token specified"));
-			}
-			if (!data.title) {
-				return next(new Error("No post title specified"));
-			}
-			if (!data.body) {
-				return next(new Error("No post body specified"));
-			}
-
-			// else, return error message:
-			return next(err);
+		// Error handling:
+		if (err) return next(err);
+		// Title and body are required:
+		if (!req.body.title) {
+			return next(new Error("No post title specified"));
+		}
+		if (!req.body.body) {
+			return next(new Error("No post body specified"));
 		}
 
-		//set user data to data object
-		data.userID = result.id;
-		data.userName = result.name;
+		const data = {
+			title: req.body.title,
+			body: req.body.body,
+			userID: result.id,
+			userName: result.name,
+			imageName: req.file.filename ? req.file.filename : null, //if no image set to null
+		};
+		console.log(data);
 
 		//add post data to db:
 		db.run(
-			"INSERT INTO posts (user_id, user_name, title, body) VALUES (?,?,?,?)",
-			[data.userID, data.userName, data.title, data.body],
+			"INSERT INTO posts (user_id, user_name, title, body, image_name) VALUES (?,?,?,?,?)",
+			[data.userID, data.userName, data.title, data.body, data.imageName],
 			function (err) {
 				if (err) return next(err);
 				res.json({ data: data });
