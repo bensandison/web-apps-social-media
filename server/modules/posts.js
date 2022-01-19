@@ -19,7 +19,7 @@ function createPost(req, res, next) {
 			body: req.body.body,
 			userID: result.id,
 			userName: result.name,
-			imageName: req.file.filename ? req.file.filename : null, //if no image set to null
+			imageName: req.file ? req.file.filename : null, //if no image set to null
 		};
 		console.log(data);
 
