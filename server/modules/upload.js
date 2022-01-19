@@ -1,23 +1,26 @@
+//Configuration for multer middleware:
 const multer = require("multer");
 
 const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, "./uploads");
+	// store files in ./uploads
+	destination: function (req, file, next) {
+		next(null, "./uploads");
 	},
-	filename: function (req, file, cb) {
-		cb(null, Date.now() + "--" + file.originalname);
+	filename: function (req, file, next) {
+		next(null, Date.now() + "--" + file.originalname);
 	},
 });
 
-const fileFilter = (req, file, cb) => {
+// check filetypes:
+const fileFilter = (req, file, next) => {
 	if (
 		file.mimetype.includes("jpeg") ||
 		file.mimetype.includes("png") ||
 		file.mimetype.includes("jpg")
 	) {
-		cb(null, true);
+		next(null, true);
 	} else {
-		cb(null, false);
+		next(null, false);
 	}
 };
 
