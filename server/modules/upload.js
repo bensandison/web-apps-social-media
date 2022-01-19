@@ -1,5 +1,6 @@
 //Configuration for multer middleware:
 const multer = require("multer");
+const UUID = require("uuid");
 
 const storage = multer.diskStorage({
 	// store files in ./uploads
@@ -7,7 +8,8 @@ const storage = multer.diskStorage({
 		next(null, "./uploads");
 	},
 	filename: function (req, file, next) {
-		next(null, Date.now() + "--" + file.originalname);
+		const fileName = UUID.v4() + "-" + file.originalname;
+		next(null, fileName);
 	},
 });
 
