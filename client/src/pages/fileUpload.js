@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
-
+import Axios from "axios";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Stack, Button } from "@mui/material";
 import FormikTextInput from "../components/FormikTextInput";
 
-/*
+/* HOW TO GET DATA:
 title: values.title,
 body: values.body,
 fileName: values.file.name,
@@ -15,9 +15,37 @@ size: `${values.file.size} bytes`,
 */
 
 const FileUpload = (props) => {
-	function submitData(values) {}
-
 	const [showUpload, setShowUpload] = useState(false); //defines if imageUpload should be hidden
+
+	function submitData(values) {
+		// Use multipart form data:
+		const formData = new FormData();
+		formData.append("title", values.title);
+		formData.append("body", values.body);
+		formData.append("image", values.file);
+
+		setTimeout(() => {
+			Axios.post("/api/posts", formData)
+				.then((response) => {
+					console.log(response);
+				})
+				.catch(function (error) {
+					//Error handling:
+					if (error.response) {
+						// Request made and server responded
+						console.log(error.response.data);
+						console.log(error.response.status);
+						console.log(error.response.headers);
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
+				});
+		}, 400);
+	}
 
 	return (
 		<div className="container">
