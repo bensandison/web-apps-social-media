@@ -1,9 +1,9 @@
 # web-apps-social-media
- social media react site
 
+social media react site
 
+In /server and /client:
 `npm i`
-
-then in /server and /client:
+then:
 `npm run dev`
 to start development server
