@@ -16,7 +16,6 @@ function App() {
 				</nav>
 				<main>
 					<Routes>
-						<Route path="/" element={<Home />} />
 						<Route path="/signup" element={<SignUpForm />} />
 						<Route path="/login" element={<LogInForm />} />
 						<Route path="/post" element={<CreatePost />} />

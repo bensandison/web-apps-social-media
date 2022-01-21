@@ -7,7 +7,6 @@ function NavBar() {
 			<AppBar postition="static">
 				<Container maxWidth="xl">
 					<Toolbar disableGutters>
-						<NavBarElement to="/" text="Home"></NavBarElement>
 						<NavBarElement to="/signup" text="Sign Up"></NavBarElement>
 						<NavBarElement to="/login" text="Log In"></NavBarElement>
 						<NavBarElement to="/post" text="Create Post"></NavBarElement>
