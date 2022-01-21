@@ -100,7 +100,7 @@ const CreatePost = (props) => {
 										</Button>
 									)
 								}
-								<Button variant="outlined" type="submit">
+								<Button variant="contained" type="submit">
 									Submit
 								</Button>
 							</Stack>
