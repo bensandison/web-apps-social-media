@@ -20,7 +20,7 @@ function PostTimeline() {
 	return (
 		<Container maxWidth="sm">
 			<Stack stack={2}>
-				<Typography variant="h3">Post Timeline</Typography>
+				<Typography variant="h4">Post Timeline</Typography>
 				{postData?.map((data, index) => (
 					<Post data={data} key={index}></Post>
 				))}
@@ -34,7 +34,7 @@ function Post(props) {
 	return (
 		<Card sx={{ p: 1, my: 1 }}>
 			<Typography variant="subtitle">{data.user_name}</Typography>
-			<Typography variant="h4">{data.title}</Typography>
+			<Typography variant="h5">{data.title}</Typography>
 			<Typography variant="body1">{data.body}</Typography>
 			{data.image_name && (
 				//if image provided:
