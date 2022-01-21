@@ -95,7 +95,13 @@ const CreatePost = (props) => {
 											)
 										}
 									</Button>
-									<Thumbnail file={values.file} />
+									<Thumbnail
+										file={values.file}
+										deleteFile={function () {
+											// Callback funciton to delete picture file
+											setFieldValue("file", false);
+										}}
+									/>
 								</Stack>
 								<Button variant="contained" type="submit">
 									Submit
@@ -122,14 +128,52 @@ function Thumbnail(props) {
 	reader.readAsDataURL(props.file);
 	reader.onloadend = () => {
 		setThumbImage(reader.result);
-		setLoading(false);
+		setLoading(false); // End loading status
 	};
 
 	// Return text if image loading
 	if (loading)
 		return <Typography variant="subtitle1">Image Loading...</Typography>;
+	// Return thumnail
 	return (
-		<img src={thumbImage} alt={props.file.name} style={{ height: 200 }}></img>
+		<div style={{ width: "min-content", position: "relative" }}>
+			<img
+				src={thumbImage}
+				alt={props.file.name}
+				style={{ maxHeight: 300, width: "auto" }}
+			></img>
+			<button
+				onClick={function () {
+					// Deletes image
+					props.deleteFile();
+				}}
+				type="button"
+				style={{
+					border: 0,
+					padding: "3px",
+					background: "#2196f3",
+					color: "white",
+					position: "absolute",
+					top: 0,
+					right: 0,
+				}}
+			>
+				<Typography>Delete Image</Typography>
+			</button>
+			<div
+				style={{
+					border: 0,
+					padding: "3px",
+					position: "absolute",
+					bottom: 0,
+					left: 0,
+					background: "#2196f3",
+					color: "white",
+				}}
+			>
+				<Typography>{props.file.name}</Typography>
+			</div>
+		</div>
 	);
 }
 
