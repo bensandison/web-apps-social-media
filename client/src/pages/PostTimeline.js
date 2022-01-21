@@ -1,5 +1,5 @@
 // import Axios from "axios";
-import { Typography, Container, Card } from "@mui/material";
+import { Typography, Container, Card, Stack } from "@mui/material";
 import { useState, useEffect } from "react";
 import Axios from "axios";
 
@@ -18,11 +18,13 @@ function PostTimeline() {
 	}, []);
 
 	return (
-		<Container maxWidth="xs" padding={2}>
-			<Typography variant="h3">Post Timeline</Typography>
-			{postData?.map((data, index) => (
-				<Post data={data} key={index}></Post>
-			))}
+		<Container maxWidth="sm">
+			<Stack stack={2}>
+				<Typography variant="h3">Post Timeline</Typography>
+				{postData?.map((data, index) => (
+					<Post data={data} key={index}></Post>
+				))}
+			</Stack>
 		</Container>
 	);
 }
@@ -30,7 +32,7 @@ function PostTimeline() {
 function Post(props) {
 	const data = props.data;
 	return (
-		<Card sx={{ my: 2 }}>
+		<Card sx={{ p: 1, my: 1 }}>
 			<Typography variant="subtitle">{data.user_name}</Typography>
 			<Typography variant="h4">{data.title}</Typography>
 			<Typography variant="body1">{data.body}</Typography>
