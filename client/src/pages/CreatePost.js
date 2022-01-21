@@ -7,8 +7,6 @@ import { Stack, Button, Typography, Container } from "@mui/material";
 import FormikTextInput from "../components/FormikTextInput";
 
 const CreatePost = (props) => {
-	const [showUpload, setShowUpload] = useState(false); //defines if imageUpload should be hidden
-
 	function submitData(values) {
 		// Use multipart form data:
 		const formData = new FormData();
@@ -70,36 +68,35 @@ const CreatePost = (props) => {
 									minRows={5}
 									maxRows={20}
 								/>
-								{
-									//Conditional rendering:
-									showUpload && (
-										<div>
-											<label htmlFor="file">File upload</label>
-											<input
-												id="file"
-												name="file"
-												type="file"
-												onChange={(event) => {
-													setFieldValue("file", event.currentTarget.files[0]);
-												}}
-											/>
-											<Thumb file={values.file} />
-										</div>
-									)
-								}
-								{
-									//Conditional rendering
-									!showUpload && (
-										<Button
-											variant="outlined"
-											onClick={() => {
-												setShowUpload(true);
-											}}
-										>
-											Add Image
-										</Button>
-									)
-								}
+								<Stack className="image-upload-controls" spacing={2}>
+									<Button
+										variant="outlined"
+										component="label"
+										style={{ width: "100%" }}
+										onClick={function () {
+											// If a file exists remove the file
+											if (!values.file) return;
+											setFieldValue("file", null);
+										}}
+									>
+										{!values.file ? "Upload Image" : "Change Image"}
+										{
+											// Only render image upload if image does not exist:
+											!values.file && (
+												<input
+													id="file"
+													name="file"
+													type="file"
+													hidden
+													onChange={(event) => {
+														setFieldValue("file", event.currentTarget.files[0]);
+													}}
+												/>
+											)
+										}
+									</Button>
+									<Thumbnail file={values.file} />
+								</Stack>
 								<Button variant="contained" type="submit">
 									Submit
 								</Button>
@@ -112,51 +109,28 @@ const CreatePost = (props) => {
 	);
 };
 
-// This component is used to display image thumbnails:
-class Thumb extends React.Component {
-	state = {
-		loading: false,
-		thumb: undefined,
+function Thumbnail(props) {
+	// Set loading true by default
+	const [loading, setLoading] = useState(true);
+	const [thumbImage, setThumbImage] = useState();
+
+	// If no file uploaded return no elements
+	if (!props.file) return null;
+
+	// Get file:
+	let reader = new FileReader();
+	reader.readAsDataURL(props.file);
+	reader.onloadend = () => {
+		setThumbImage(reader.result);
+		setLoading(false);
 	};
 
-	componentWillReceiveProps(nextProps) {
-		if (!nextProps.file) {
-			return;
-		}
-
-		this.setState({ loading: true }, () => {
-			let reader = new FileReader();
-
-			reader.onloadend = () => {
-				this.setState({ loading: false, thumb: reader.result });
-			};
-
-			reader.readAsDataURL(nextProps.file);
-		});
-	}
-
-	render() {
-		const { file } = this.props;
-		const { loading, thumb } = this.state;
-
-		if (!file) {
-			return null;
-		}
-
-		if (loading) {
-			return <p>loading...</p>;
-		}
-
-		return (
-			<img
-				src={thumb}
-				alt={file.name}
-				className="img-thumbnail mt-2"
-				height={200}
-				width={200}
-			/>
-		);
-	}
+	// Return text if image loading
+	if (loading)
+		return <Typography variant="subtitle1">Image Loading...</Typography>;
+	return (
+		<img src={thumbImage} alt={props.file.name} style={{ height: 200 }}></img>
+	);
 }
 
 export default CreatePost;
