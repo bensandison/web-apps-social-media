@@ -49,8 +49,7 @@ function submitData(values) {
 // And now we can use these
 function SignUpForm() {
 	return (
-		<Container maxWidth="xs" padding={2}>
-			<Typography variant="h4">Sign Up:</Typography>
+		<Container maxWidth="xs">
 			<Formik
 				initialValues={{ ...initialFormState }}
 				validationSchema={yupSchema}
@@ -60,10 +59,13 @@ function SignUpForm() {
 			>
 				<Form>
 					<Stack spacing={2}>
+						<Typography variant="h4">Sign Up:</Typography>
 						<FormikTextInput name="name" label="User Name:" />
 						<FormikTextInput name="email" label="Email Adress:" />
 						<FormikTextInput name="password" label="Password:" />
-						<Button variant="contained" type="submit">Submit</Button>
+						<Button variant="contained" type="submit">
+							Submit
+						</Button>
 					</Stack>
 				</Form>
 			</Formik>

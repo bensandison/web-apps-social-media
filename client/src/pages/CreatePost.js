@@ -3,7 +3,7 @@ import { useState } from "react";
 import Axios from "axios";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { Stack, Button, Typography } from "@mui/material";
+import { Stack, Button, Typography, Container } from "@mui/material";
 import FormikTextInput from "../components/FormikTextInput";
 
 const CreatePost = (props) => {
@@ -40,7 +40,7 @@ const CreatePost = (props) => {
 	}
 
 	return (
-		<div className="container">
+		<Container maxWidth="sm">
 			<Formik
 				initialValues={{
 					title: "",
@@ -108,7 +108,7 @@ const CreatePost = (props) => {
 					);
 				}}
 			</Formik>
-		</div>
+		</Container>
 	);
 };
 
