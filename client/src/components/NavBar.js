@@ -7,26 +7,27 @@ function NavBar() {
 			<AppBar postition="static">
 				<Container maxWidth="xl">
 					<Toolbar disableGutters>
-						<Link to="/" style={{ textDecoration: "none" }}>
-							<Typography variant="h6">Home</Typography>
-						</Link>
-						<Link to="/signup" style={{ textDecoration: "none" }}>
-							<Typography variant="h6">Signup</Typography>
-						</Link>
-						<Link to="/login" style={{ textDecoration: "none" }}>
-							<Typography variant="h6">Login</Typography>
-						</Link>
-						<Link to="/post" style={{ textDecoration: "none" }}>
-							<Typography variant="h6">Create Post</Typography>
-						</Link>
-						<Link to="/timeline" style={{ textDecoration: "none" }}>
-							<Typography variant="h6">Post Timeline</Typography>
-						</Link>
+						<NavBarElement to="/" text="Home"></NavBarElement>
+						<NavBarElement to="/signup" text="Sign Up"></NavBarElement>
+						<NavBarElement to="/login" text="Log In"></NavBarElement>
+						<NavBarElement to="/post" text="Create Post"></NavBarElement>
+						<NavBarElement to="/timeline" text="Post Timeline"></NavBarElement>
 					</Toolbar>
 				</Container>
 			</AppBar>
 			<Toolbar></Toolbar>
 		</>
+		// Empty Toolbar used to move other content from bellow AppBar
+	);
+}
+
+function NavBarElement(props) {
+	return (
+		<Link to={props.to} style={{ textDecoration: "none" }}>
+			<Typography variant="h6" sx={{ color: "white", mx: 1 }}>
+				{props.text}
+			</Typography>
+		</Link>
 	);
 }
 
