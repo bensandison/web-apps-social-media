@@ -3,7 +3,7 @@ import { useState } from "react";
 import Axios from "axios";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { Stack, Button } from "@mui/material";
+import { Stack, Button, Typography } from "@mui/material";
 import FormikTextInput from "../components/FormikTextInput";
 
 const CreatePost = (props) => {
@@ -61,6 +61,7 @@ const CreatePost = (props) => {
 					return (
 						<form onSubmit={handleSubmit}>
 							<Stack spacing={2}>
+								<Typography variant="h4">Create Post</Typography>
 								<FormikTextInput name="title" label="Post Title:" />
 								<FormikTextInput
 									name="body"

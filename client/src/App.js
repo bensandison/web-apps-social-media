@@ -1,5 +1,6 @@
 import { Container } from "@mui/material";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import LogInForm from "./pages/LogInForm";
 import SignUpForm from "./pages/SignUpForm";
@@ -11,11 +12,7 @@ function App() {
 		<Container>
 			<Router>
 				<nav>
-					<Link to="/">Home</Link>
-					<Link to="/signup">Sign Up</Link>
-					<Link to="/login">Log In</Link>
-					<Link to="/post">Create Post</Link>
-					<Link to="/timeline">Post Timeline</Link>
+					<NavBar></NavBar>
 				</nav>
 				<main>
 					<Routes>
