@@ -8,7 +8,11 @@ import PostTimeline from "./pages/PostTimeline";
 
 function App() {
 	return (
-		<Container>
+		<Container
+			sx={{
+				backgroundColor: "#f5f5f5",
+			}}
+		>
 			<Router>
 				<Container component="nav">
 					<NavBar></NavBar>
