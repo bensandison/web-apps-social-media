@@ -53,7 +53,7 @@ function Post(props) {
 					<img
 						src={"/uploads/" + data.image_name}
 						alt={data.title}
-						height="200"
+						style={{ maxHeight: 200, maxWidth: 200 }}
 					/>
 				)}
 				<Container>
