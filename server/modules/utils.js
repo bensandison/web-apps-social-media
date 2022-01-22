@@ -1,7 +1,7 @@
 const db = require("./database.js");
 
-// returns true if token is stored in the system (can also use findByToken if user data is also wanted)
-// can pass "next" as the callback function for error handling
+// finds if token is stored in the system (can also use findByToken if user data is also wanted)
+// pass callback function for error handling
 function doesTokenExist(token, callback) {
 	if (!token) return callback(new Error("No token provided"));
 	db.get("SELECT token FROM user WHERE token = ?", token, function (err, row) {
