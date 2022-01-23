@@ -1,3 +1,4 @@
+const db = require("./database");
 const { findByToken } = require("./utils");
 
 // Will be storing the number of likes in the posts db.
@@ -13,14 +14,32 @@ function toggleLike(req, res, next) {
 	findByToken(req.cookies.token, function (err, result) {
 		if (err) return next(err);
 
+		db.get(
+			`SELECT 1 FROM likes WHERE post_id = ? AND user_id = ? LIMIT 1`,
+			[req.body.postID, result.id],
+			function (err, result) {
+				if (err) return next(err);
+				console.log("hi");
+				console.log(result);
+				if (!result) {
+					// If like does not already exist
+				} else {
+					// If like already exists
+				}
+			}
+		);
+
+		// Insert Like
+		/*
 		db.run(
-			"INSERT INTO likes (post_id, user_id) VALUES (?,?)",
+			`INSERT INTO likes (post_id, user_id) VALUES (?,?)`,
 			[req.body.postID, result.id],
 			function (err) {
 				if (err) return next(err);
 				res.json({ data: data });
 			}
 		);
+		*/
 	});
 }
 

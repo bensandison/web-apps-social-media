@@ -13,6 +13,7 @@ const {
 	getAllPosts,
 } = require("./modules/posts");
 const { upload } = require("./modules/upload");
+const { toggleLike } = require("./modules/likes");
 
 const express = require("express");
 const router = express.Router();
@@ -33,5 +34,8 @@ router.post("/posts", upload.single("image"), createPost);
 router.get("/posts/last", totalPosts);
 router.get("/posts", getPosts);
 router.get("/posts/all", getAllPosts);
+
+//Like
+router.post("/like", toggleLike);
 
 module.exports = router;
