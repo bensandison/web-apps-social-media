@@ -1,9 +1,9 @@
 import { Formik, Form } from "formik";
 import Axios from "axios";
 import * as Yup from "yup";
-
-import FormikTextInput from "../components/FormikTextInput";
 import { Button, Container, Stack, Typography } from "@mui/material";
+import FormikTextInput from "../components/FormikTextInput";
+import axiosError from "../utils/axiosError";
 
 const initialFormState = {
 	email: "",
@@ -24,19 +24,8 @@ function submitData(values) {
 			.then((response) => {
 				console.log(response);
 			})
-			.catch(function (error) {
-				if (error.response) {
-					// Request made and server responded
-					console.log(error.response.data);
-					console.log(error.response.status);
-					console.log(error.response.headers);
-				} else if (error.request) {
-					// The request was made but no response was received
-					console.log(error.request);
-				} else {
-					// Something happened in setting up the request that triggered an Error
-					console.log("Error", error.message);
-				}
+			.catch((error) => {
+				axiosError(error);
 			});
 		// setSubmitting(false);
 	}, 400);
