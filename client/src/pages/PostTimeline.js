@@ -1,21 +1,21 @@
 // import Axios from "axios";
-import { Typography, Container, Card, Stack, Button } from "@mui/material";
+import { Typography, Container, Stack } from "@mui/material";
 import { useState, useEffect } from "react";
-import {
-	Favorite,
-	FavoriteBorder,
-	ModeComment,
-	ModeCommentOutlined,
-} from "@mui/icons-material";
 import Axios from "axios";
+import axiosError from "../utils/axiosError";
+import Post from "../components/Post";
 
 function PostTimeline() {
 	const [postData, setPostData] = useState();
 
 	function getData() {
-		Axios.get("/api/posts/all").then(function (response) {
-			setPostData(response.data.data);
-		});
+		Axios.get("/api/posts/all")
+			.then(function (response) {
+				setPostData(response.data.data);
+			})
+			.catch((err) => {
+				axiosError(err);
+			});
 	}
 
 	//runs on first render
@@ -32,53 +32,6 @@ function PostTimeline() {
 				))}
 			</Stack>
 		</Container>
-	);
-}
-
-function Post(props) {
-	// Has this user liked or commented?
-	// TODO: set these from DB
-	const [liked, setLiked] = useState(false);
-	const [commented, setCommented] = useState(false);
-
-	const data = props.data;
-	return (
-		<Card sx={{ p: 2 }}>
-			<Stack spacing={1}>
-				<Typography variant="subtitle">{data.user_name}</Typography>
-				<Typography variant="h5">{data.title}</Typography>
-				<Typography variant="body1">{data.body}</Typography>
-				{data.image_name && (
-					//if image provided:
-					<img
-						src={"/uploads/" + data.image_name}
-						alt={data.title}
-						style={{ maxHeight: 200, maxWidth: 200 }}
-					/>
-				)}
-				<Container>
-					<Button
-						onClick={function () {
-							//add/remove comment from db
-							setLiked(!liked); //TODO: use callback here
-						}}
-					>
-						{liked ? <Favorite></Favorite> : <FavoriteBorder></FavoriteBorder>}
-					</Button>
-					<Button
-						onClick={function () {
-							//add/remove comment from db
-						}}
-					>
-						{commented ? (
-							<ModeComment></ModeComment>
-						) : (
-							<ModeCommentOutlined></ModeCommentOutlined>
-						)}
-					</Button>
-				</Container>
-			</Stack>
-		</Card>
 	);
 }
 
