@@ -14,7 +14,12 @@ function Post(props) {
 	// TODO: set these from DB
 	const data = props.data;
 
-	// LIKES CODE:
+	//runs on first render
+	useEffect(() => {
+		getLikes();
+	}, []);
+
+	// LIKES:
 	// Post state (has user liked post?, post like count)
 	const [liked, setLiked] = useState(false);
 	const [likeCount, setLikeCount] = useState(null);
@@ -40,13 +45,9 @@ function Post(props) {
 			});
 	}
 
+	// COMMENTS:
 	const [commented, setCommented] = useState(false);
 	const [commentCount, setCommentCount] = useState(null);
-
-	//runs on first render
-	useEffect(() => {
-		getLikes();
-	}, []);
 
 	return (
 		<Card sx={{ p: 2 }}>
