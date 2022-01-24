@@ -13,7 +13,7 @@ const {
 	getAllPosts,
 } = require("./modules/posts");
 const { upload } = require("./modules/upload");
-const { getLikes } = require("./modules/likes");
+const { getLikes, getLikesList } = require("./modules/likes");
 
 const express = require("express");
 const router = express.Router();
@@ -37,5 +37,6 @@ router.get("/posts/all", getAllPosts);
 
 //Like
 router.get("/likes", getLikes);
+router.get("/likes/list", getLikesList);
 
 module.exports = router;

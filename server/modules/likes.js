@@ -1,5 +1,5 @@
 const db = require("./database");
-const { findByToken } = require("./utils");
+const { findByToken, doesTokenExist } = require("./utils");
 
 // Called for each post
 // Returns number of likes and if this user has liked the post
@@ -40,4 +40,23 @@ function getLikes(req, res, next) {
 	});
 }
 
-module.exports = { getLikes };
+// Returns all users who like a post:
+// PARAMS: postID
+function getLikesList(req, res, next) {
+	// Check the user has a valid session:
+	doesTokenExist(req.cookies.token, function (err) {
+		if (err) return next(err);
+
+		// Get all likes on the post
+		db.all(
+			"SELECT * FROM likes WHERE post_id = ?",
+			[req.body.postID],
+			function (err, result) {
+				if (err) return next(err);
+				res.json(result); //respond with posts
+			}
+		);
+	});
+}
+
+module.exports = { getLikes, getLikesList };
