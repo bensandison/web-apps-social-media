@@ -14,7 +14,11 @@ const {
 } = require("./modules/posts");
 const { upload } = require("./modules/upload");
 const { getLikes, getLikesList, toggleLike } = require("./modules/likes");
-const { getCommentCount, getComments } = require("./modules/comments");
+const {
+	getCommentCount,
+	getComments,
+	deleteComment,
+} = require("./modules/comments");
 
 const express = require("express");
 const router = express.Router();
@@ -44,5 +48,6 @@ router.post("/likes/:postID", toggleLike);
 //Comments
 router.get("/comments/count/:postID", getCommentCount);
 router.get("/comments/:postID", getComments);
+router.delete("/comments/:commentID", deleteComment);
 
 module.exports = router;

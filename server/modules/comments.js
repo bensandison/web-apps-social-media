@@ -42,4 +42,24 @@ function getComments(req, res, next) {
 	});
 }
 
-module.exports = { getCommentCount, getComments };
+function addComment(req, res, next) {}
+
+// Delete the comment by comment id:
+function deleteComment(req, res, next) {
+	if (!req.params.commentID) return next(new Error("No postID provided"));
+
+	findByToken(req.cookies.token, function (err, userData) {
+		if (err) return next(err);
+
+		db.run(
+			"DELETE * FROM comments WHERE id = ? and user_id = ?",
+			[req.params.commentID, userData.id],
+			function (err) {
+				if (err) return next(err);
+				res.json({ message: "success" });
+			}
+		);
+	});
+}
+
+module.exports = { getCommentCount, getComments, deleteComment, addComment };
