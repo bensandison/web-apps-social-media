@@ -32,7 +32,7 @@ function getComments(req, res, next) {
 
 		// Get all likes on the post
 		db.all(
-			"SELECT * FROM likes WHERE post_id = ?",
+			"SELECT * FROM comments WHERE post_id = ?",
 			[req.params.postID],
 			function (err, result) {
 				if (err) return next(err);
@@ -42,4 +42,4 @@ function getComments(req, res, next) {
 	});
 }
 
-module.exports = { getCommentCount };
+module.exports = { getCommentCount, getComments };
