@@ -14,6 +14,7 @@ const {
 } = require("./modules/posts");
 const { upload } = require("./modules/upload");
 const { getLikes, getLikesList, toggleLike } = require("./modules/likes");
+const { getCommentCount } = require("./modules/comments");
 
 const express = require("express");
 const router = express.Router();
@@ -39,5 +40,8 @@ router.get("/posts/all", getAllPosts);
 router.get("/likes/:postID", getLikes);
 router.get("/likes/list/:postID", getLikesList);
 router.post("/likes/:postID", toggleLike);
+
+//Comments
+router.get("/comments/count/:postID", getCommentCount);
 
 module.exports = router;
