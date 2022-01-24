@@ -1,46 +1,45 @@
 const db = require("./database");
 const { findByToken } = require("./utils");
 
-// Will be storing the number of likes in the posts db.
-// Likes db will only be used to auth one like per user
-function toggleLike(req, res, next) {
-	// PARAMS: postID
+// Called for each post
+// Returns number of likes and if this user has liked the post
+// PARAMS: postID
+// RETURNS: likeCount, likeStatus
+function getLikes(req, res, next) {
 	if (!req.body.postID) return next(new Error("No postID provided"));
 
-	// add/remove user and post ID to likes db
-	// update likes count in posts db
-	// send back users "liked state" (has the user liked the post)
-	// send back new total likes count
-	findByToken(req.cookies.token, function (err, result) {
+	findByToken(req.cookies.token, function (err, userData) {
 		if (err) return next(err);
 
+		// Get number of likes on post:
 		db.get(
-			`SELECT 1 FROM likes WHERE post_id = ? AND user_id = ? LIMIT 1`,
-			[req.body.postID, result.id],
+			"SELECT COUNT(*) FROM likes WHERE post_id = ?;",
+			[req.body.postID],
 			function (err, result) {
 				if (err) return next(err);
-				console.log("hi");
-				console.log(result);
-				if (!result) {
-					// If like does not already exist
-				} else {
-					// If like already exists
-				}
-			}
-		);
 
-		// Insert Like
-		/*
-		db.run(
-			`INSERT INTO likes (post_id, user_id) VALUES (?,?)`,
-			[req.body.postID, result.id],
-			function (err) {
-				if (err) return next(err);
-				res.json({ data: data });
+				// Result is returned as an object, change to int variable:
+				const count = result[Object.keys(result)[0]];
+
+				// Has this user liked the post?
+				db.get(
+					"SELECT 1 FROM likes WHERE post_id = ? AND user_id = ? LIMIT 1",
+					[req.body.postID, userData.id],
+					function (err, result) {
+						if (err) return next(err);
+
+						let hasLiked = false;
+						if (result == 1) {
+							// The user HAS liked the post
+							hasLiked = true;
+						}
+
+						return res.json({ likeStatus: hasLiked, likeCount: count });
+					}
+				);
 			}
 		);
-		*/
 	});
 }
 
-module.exports = { toggleLike };
+module.exports = { getLikes };
