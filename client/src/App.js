@@ -5,6 +5,7 @@ import LogInForm from "./pages/LogInForm";
 import SignUpForm from "./pages/SignUpForm";
 import CreatePost from "./pages/CreatePost";
 import PostTimeline from "./pages/PostTimeline";
+import PostView from "./pages/PostView";
 
 function App() {
 	return (
@@ -23,8 +24,9 @@ function App() {
 					<Routes>
 						<Route path="/signup" element={<SignUpForm />} />
 						<Route path="/login" element={<LogInForm />} />
-						<Route path="/post" element={<CreatePost />} />
+						<Route path="/createpost" element={<CreatePost />} />
 						<Route path="/timeline" element={<PostTimeline />} />
+						<Route path="/post" element={<PostView />} />
 					</Routes>
 				</Container>
 			</Router>

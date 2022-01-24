@@ -9,7 +9,7 @@ function NavBar() {
 					<Toolbar disableGutters>
 						<NavBarElement to="/signup" text="Sign Up"></NavBarElement>
 						<NavBarElement to="/login" text="Log In"></NavBarElement>
-						<NavBarElement to="/post" text="Create Post"></NavBarElement>
+						<NavBarElement to="/createpost" text="Create Post"></NavBarElement>
 						<NavBarElement to="/timeline" text="Post Timeline"></NavBarElement>
 					</Toolbar>
 				</Container>

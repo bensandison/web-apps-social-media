@@ -8,10 +8,10 @@ import {
 import Axios from "axios";
 import axiosError from "../utils/axiosError";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Post(props) {
 	// Has this user liked or commented?
-	// TODO: set these from DB
 	const data = props.data;
 
 	//runs on first render
@@ -74,11 +74,7 @@ function Post(props) {
 						{liked ? <Favorite></Favorite> : <FavoriteBorder></FavoriteBorder>}
 						<Typography>{likeCount}</Typography>
 					</Button>
-					<Button
-						onClick={function () {
-							//add/remove comment from db
-						}}
-					>
+					<Button to="/post" component={Link} state={{ data }}>
 						{commented ? (
 							<ModeComment></ModeComment>
 						) : (
