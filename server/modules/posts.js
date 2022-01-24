@@ -47,7 +47,6 @@ function totalPosts(req, res, next) {
 			[],
 			function (err, result) {
 				if (err) return next(err);
-				if (!result) return next(new Error("No result found"));
 				//return index of most recent post
 				res.json({ data: result.post_index });
 			}
@@ -74,7 +73,6 @@ function getPosts(req, res, next) {
 						return next(new Error("Missing parameters"));
 					else return next(err);
 				}
-				if (!result) return next(new Error("No result found"));
 				res.json({ data: result }); //respond with posts
 			}
 		);
@@ -92,7 +90,6 @@ function getAllPosts(req, res, next) {
 			[],
 			function (err, result) {
 				if (err) return next(err);
-				if (!result) return next(new Error("No result found"));
 				res.json({ data: result }); //respond with posts
 			}
 		);
