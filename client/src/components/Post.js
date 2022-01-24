@@ -33,7 +33,7 @@ function Post(props) {
 		Axios.post("/api/likes/" + data.post_index)
 			.then((response) => {
 				console.log(response);
-				setLiked(response.data.likeStatus);
+				getLikes();
 			})
 			.catch((error) => {
 				axiosError(error);
