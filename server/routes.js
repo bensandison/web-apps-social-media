@@ -36,8 +36,8 @@ router.get("/posts", getPosts);
 router.get("/posts/all", getAllPosts);
 
 //Likes
-router.get("/likes", getLikes);
-router.get("/likes/list", getLikesList);
-router.post("/likes", toggleLike);
+router.get("/likes/:postID", getLikes);
+router.get("/likes/list/:postID", getLikesList);
+router.post("/likes/:postID", toggleLike);
 
 module.exports = router;

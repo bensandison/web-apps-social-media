@@ -42,15 +42,15 @@ function likeCountUtil(postID, callback) {
 // PARAMS: postID
 // RETURNS: likeCount, likeStatus
 function getLikes(req, res, next) {
-	if (!req.body.postID) return next(new Error("No postID provided"));
+	if (!req.params.postID) return next(new Error("No postID provided"));
 
 	findByToken(req.cookies.token, function (err, userData) {
 		if (err) return next(err);
 
-		likeStatusUtil(req.body.postID, userData.id, (err, result) => {
+		likeStatusUtil(req.params.postID, userData.id, (err, result) => {
 			if (err) return next(err);
 			const likeStatus = result;
-			likeCountUtil(req.body.postID, (err, result) => {
+			likeCountUtil(req.params.postID, (err, result) => {
 				if (err) return next(err);
 				const likeCount = result;
 				// Return data in likeStatus and likeCount as JSON:
@@ -70,7 +70,7 @@ function getLikesList(req, res, next) {
 		// Get all likes on the post
 		db.all(
 			"SELECT * FROM likes WHERE post_id = ?",
-			[req.body.postID],
+			[req.params.postID],
 			function (err, result) {
 				if (err) return next(err);
 				res.json(result); //respond with posts
@@ -83,13 +83,13 @@ function getLikesList(req, res, next) {
 // PARAMS: postID
 // RETURNS: likeStatus
 function toggleLike(req, res, next) {
-	if (!req.body.postID) return next(new Error("No postID provided"));
+	if (!req.params.postID) return next(new Error("No postID provided"));
 
 	findByToken(req.cookies.token, function (err, userData) {
 		if (err) return next(err);
 
 		// Find the current likeStatus
-		likeStatusUtil(req.body.postID, userData.id, (err, result) => {
+		likeStatusUtil(req.params.postID, userData.id, (err, result) => {
 			if (err) return next(err);
 
 			const likeStatus = result;
@@ -97,7 +97,7 @@ function toggleLike(req, res, next) {
 				// Remove Like from DB
 				db.run(
 					"DELETE FROM likes WHERE post_id = ? AND user_id = ?",
-					[req.body.postID, userData.id],
+					[req.params.postID, userData.id],
 					function (err) {
 						if (err) return next(err);
 
@@ -109,7 +109,7 @@ function toggleLike(req, res, next) {
 				// Add like to db
 				db.run(
 					"INSERT INTO likes (post_id, user_id) VALUES (?,?)",
-					[req.body.postID, userData.id],
+					[req.params.postID, userData.id],
 					function (err) {
 						if (err) return next(err);
 
