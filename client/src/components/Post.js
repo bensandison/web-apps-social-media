@@ -1,54 +1,9 @@
-import { Typography, Container, Card, Stack, Button } from "@mui/material";
-import {
-	Favorite,
-	FavoriteBorder,
-	ModeComment,
-	ModeCommentOutlined,
-} from "@mui/icons-material";
-import Axios from "axios";
-import axiosError from "../utils/axiosError";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Typography, Container, Card, Stack } from "@mui/material";
 
-function Post(props) {
-	// Has this user liked or commented?
-	const data = props.data;
+import LikeButton from "./LikeButton";
+import CommentButton from "./CommentButton";
 
-	//runs on first render
-	useEffect(() => {
-		getLikes();
-	}, []);
-
-	// LIKES:
-	// Post state (has user liked post?, post like count)
-	const [liked, setLiked] = useState(false);
-	const [likeCount, setLikeCount] = useState(null);
-	function getLikes() {
-		Axios.get("/api/likes/" + data.post_index)
-			.then((response) => {
-				console.log(response);
-				setLiked(response.data.hasLiked);
-				setLikeCount(response.data.likeCount);
-			})
-			.catch((error) => {
-				axiosError(error);
-			});
-	}
-	function toggleLike() {
-		Axios.post("/api/likes/" + data.post_index)
-			.then((response) => {
-				console.log(response);
-				getLikes();
-			})
-			.catch((error) => {
-				axiosError(error);
-			});
-	}
-
-	// COMMENTS:
-	const [commented, setCommented] = useState(false);
-	const [commentCount, setCommentCount] = useState(null);
-
+function Post({ data }) {
 	return (
 		<Card sx={{ p: 2 }}>
 			<Stack spacing={1}>
@@ -64,23 +19,8 @@ function Post(props) {
 					/>
 				)}
 				<Container>
-					<Button
-						onClick={function () {
-							//add/remove comment from db
-							toggleLike(); //call db
-							setLiked((prevState) => !prevState); // Instantly toggle state
-						}}
-					>
-						{liked ? <Favorite></Favorite> : <FavoriteBorder></FavoriteBorder>}
-						<Typography>{likeCount}</Typography>
-					</Button>
-					<Button to="/post" component={Link} state={{ data }}>
-						{commented ? (
-							<ModeComment></ModeComment>
-						) : (
-							<ModeCommentOutlined></ModeCommentOutlined>
-						)}
-					</Button>
+					<LikeButton data={data} />
+					<CommentButton data={data} />
 				</Container>
 			</Stack>
 		</Card>
