@@ -63,6 +63,8 @@ function getLikes(req, res, next) {
 // Returns all users who like a post:
 // PARAMS: postID
 function getLikesList(req, res, next) {
+	if (!req.params.postID) return next(new Error("No postID provided"));
+
 	// Check the user has a valid session:
 	doesTokenExist(req.cookies.token, function (err) {
 		if (err) return next(err);
