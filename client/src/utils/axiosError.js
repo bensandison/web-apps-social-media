@@ -1,5 +1,5 @@
 // Handles error handling on response from axios
-function axiosError(error) {
+export default function axiosError(error) {
 	if (error.response) {
 		// Request made and server responded
 		console.log(error.response.data);

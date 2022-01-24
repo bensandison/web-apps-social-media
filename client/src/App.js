@@ -8,7 +8,13 @@ import PostTimeline from "./pages/PostTimeline";
 
 function App() {
 	return (
-		<Container style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
+		<Container
+			style={{
+				backgroundColor: "#f5f5f5",
+				minHeight: "100vh",
+				minWidth: "100%",
+			}}
+		>
 			<Router>
 				<Container component="nav">
 					<NavBar></NavBar>
