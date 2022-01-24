@@ -10,16 +10,14 @@ function getLikes(req, res, next) {
 
 	findByToken(req.cookies.token, function (err, userData) {
 		if (err) return next(err);
-
 		// Get number of likes on post:
 		db.get(
 			"SELECT COUNT(*) FROM likes WHERE post_id = ?;",
 			[req.body.postID],
 			function (err, result) {
 				if (err) return next(err);
-
 				// Result is returned as an object, change to int variable:
-				const count = result[Object.keys(result)[0]];
+				const likeCount = result ? result[Object.keys(result)[0]] : null;
 
 				// Has this user liked the post?
 				db.get(
@@ -28,13 +26,13 @@ function getLikes(req, res, next) {
 					function (err, result) {
 						if (err) return next(err);
 
-						let hasLiked = false;
-						if (result == 1) {
-							// The user HAS liked the post
-							hasLiked = true;
-						}
+						// Result is returned as an object, change to int variable:
+						result = result ? result[Object.keys(result)[0]] : null;
+						// has the user liked the post?
+						const hasLiked = result == 1 ? true : false;
 
-						return res.json({ likeStatus: hasLiked, likeCount: count });
+						// Return likedStatus and likedCount
+						return res.json({ likeStatus: hasLiked, likeCount: likeCount });
 					}
 				);
 			}
