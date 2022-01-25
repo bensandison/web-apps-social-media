@@ -27,7 +27,7 @@ export default function LikeButton({ data }) {
 	}
 	function toggleLike() {
 		Axios.post("/api/likes/" + data.post_index)
-			.then((response) => {
+			.then(() => {
 				getLikes();
 			})
 			.catch((error) => {

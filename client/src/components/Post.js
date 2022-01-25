@@ -1,5 +1,4 @@
 import { Typography, Container, Card, Stack } from "@mui/material";
-
 import LikeButton from "./LikeButton";
 import CommentButton from "./CommentButton";
 
@@ -18,7 +17,7 @@ function Post({ data }) {
 						style={{ maxHeight: 200, maxWidth: 200 }}
 					/>
 				)}
-				<Container>
+				<Container className="post-interactions">
 					<LikeButton data={data} />
 					<CommentButton data={data} />
 				</Container>
