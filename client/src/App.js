@@ -1,6 +1,7 @@
-import { Container } from "@mui/material";
+import { Container, CircularProgress, Box } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import LoadingPage from "./pages/loadingPage";
 import WelcomePage from "./pages/WelcomePage";
 import LogInForm from "./pages/LogInForm";
 import SignUpForm from "./pages/SignUpForm";
@@ -23,7 +24,9 @@ function App() {
 				</Container>
 				<Container component="main" sx={{ pt: 2 }}>
 					<Routes>
-						<Route path="/"></Route>
+						<Route path="/">
+							<LoadingPage />
+						</Route>
 						<Route path="/welcome" element={<WelcomePage />} />
 						<Route path="/signup" element={<SignUpForm />} />
 						<Route path="/login" element={<LogInForm />} />
