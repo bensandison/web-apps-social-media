@@ -18,6 +18,7 @@ const {
 	getCommentCount,
 	getComments,
 	deleteComment,
+	addComment,
 } = require("./modules/comments");
 
 const express = require("express");
@@ -48,6 +49,7 @@ router.post("/likes/:postID", toggleLike);
 //Comments
 router.get("/comments/count/:postID", getCommentCount);
 router.get("/comments/:postID", getComments);
+router.post("/comments/:postID", addComment);
 router.delete("/comments/:commentID", deleteComment);
 
 module.exports = router;

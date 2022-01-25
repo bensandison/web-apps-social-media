@@ -42,7 +42,34 @@ function getComments(req, res, next) {
 	});
 }
 
-function addComment(req, res, next) {}
+function addComment(req, res, next) {
+	console.log("done");
+
+	// ID and body are required:
+	if (!req.params.postID) {
+		return next(new Error("No post id specified"));
+	}
+	if (!req.body.body) {
+		return next(new Error("No comment body specified"));
+	}
+
+	findByToken(req.cookies.token, function (err, result) {
+		// Error handling:
+		if (err) return next(err);
+
+		//add comment data to db:
+		db.run(
+			"INSERT INTO comments (post_id, user_id, body) VALUES (?,?,?)",
+			[req.params.postID, result.id, req.body.body],
+			function (err) {
+				if (err) return next(err);
+
+				// Success response:
+				res.json({ message: "success" });
+			}
+		);
+	});
+}
 
 // Delete the comment by comment id:
 function deleteComment(req, res, next) {
