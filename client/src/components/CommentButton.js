@@ -13,9 +13,8 @@ export default function CommentButton({ data }) {
 
 	const [commentCount, setCommentCount] = useState(0);
 	function getCommentCount() {
-		Axios.get("/api/comments/count" + data.post_index)
+		Axios.get("/api/comments/count/" + data.post_index)
 			.then((response) => {
-				if (!response.data.commentCount) response.data.commentCount = 0;
 				setCommentCount(response.data.commentCount);
 			})
 			.catch((error) => {
