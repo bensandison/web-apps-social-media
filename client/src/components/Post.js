@@ -1,4 +1,4 @@
-import { Typography, Container, Card, Stack } from "@mui/material";
+import { Typography, Container, Card, Stack, Avatar } from "@mui/material";
 import LikeButton from "./LikeButton";
 import CommentButton from "./CommentButton";
 
@@ -6,7 +6,18 @@ function Post({ data }) {
 	return (
 		<Card sx={{ p: 2 }}>
 			<Stack spacing={1}>
-				<Typography variant="subtitle">{data.user_name}</Typography>
+				<Stack direction="row" spacing={1}>
+					<Avatar
+						src={
+							"https://avatars.dicebear.com/api/pixel-art/" +
+							data.user_id +
+							".svg"
+						}
+						alt="avatar"
+						variant="square"
+					/>
+					<Typography variant="subtitle">{data.user_name}</Typography>
+				</Stack>
 				<Typography variant="h5">{data.title}</Typography>
 				<Typography variant="body1">{data.body}</Typography>
 				{data.image_name && (

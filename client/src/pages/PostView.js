@@ -52,7 +52,7 @@ export default function PostView(props) {
 	}
 
 	return (
-		<Container maxWidth="sm">
+		<Container maxWidth="sm" sx={{ pb: 2 }}>
 			<Stack spacing={2}>
 				<Post data={data}></Post>
 				<Card sx={{ p: 2 }}>
