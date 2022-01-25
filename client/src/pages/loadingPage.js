@@ -1,18 +1,61 @@
 import { Box, CircularProgress, Typography, Stack } from "@mui/material";
+import { useState, useEffect, useRef } from "react";
+import Axios from "axios";
+import axiosError from "../utils/axiosError";
+import { Navigate } from "react-router-dom";
 
 export default function LoadingPage() {
-	return (
-		<Stack
-			spacing={2}
-			style={{
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-				height: "90vh",
-			}}
-		>
-			<CircularProgress></CircularProgress>
-			<Typography variant="subtitle1">Loading... </Typography>
-		</Stack>
-	);
+	// Setting state when component has been unmounted can cause errors:
+	const isMounted = useRef(false);
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
+
+	const [loading, setLoading] = useState(true);
+	const [loggedIn, setLoggedIn] = useState(false);
+
+	function getData() {
+		Axios.get("/api/posts/all")
+			.then(function () {
+				// User is logged in:
+				if (isMounted.current) {
+					setLoggedIn(true);
+					setLoading(false);
+				}
+			})
+			.catch((err) => {
+				// Login failed:
+				axiosError(err);
+				if (isMounted.current) {
+					setLoggedIn(false);
+					setLoading(false);
+				}
+			});
+	}
+
+	//runs on first render
+	useEffect(() => {
+		getData();
+	}, []);
+
+	if (loading)
+		return (
+			<Stack
+				spacing={2}
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					height: "90vh",
+				}}
+			>
+				<CircularProgress></CircularProgress>
+				<Typography variant="subtitle1">Loading... </Typography>
+			</Stack>
+		);
+	else
+		return loggedIn ? <Navigate to="/timeline" /> : <Navigate to="/welcome" />;
 }
