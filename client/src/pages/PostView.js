@@ -1,28 +1,21 @@
-import { Typography, Container, Card, Stack } from "@mui/material";
+import { Card, Container, Stack, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import Post from "../components/Post";
+import FormikTextInput from "../components/FormikTextInput";
 
-function Post(props) {
-	const data = useLocation().state.data;
+export default function PostView(props) {
+	const data = useLocation().state.data; //Get post data
 
 	return (
 		<Container maxWidth="sm">
-			<Card sx={{ p: 2 }}>
-				<Stack spacing={1}>
-					<Typography variant="subtitle">{data.user_name}</Typography>
-					<Typography variant="h5">{data.title}</Typography>
-					<Typography variant="body1">{data.body}</Typography>
-					{data.image_name && (
-						//if image provided:
-						<img
-							src={"/uploads/" + data.image_name}
-							alt={data.title}
-							style={{ maxHeight: 200, maxWidth: 200 }}
-						/>
-					)}
-				</Stack>
-			</Card>
+			<Stack spacing={2}>
+				<Post data={data}></Post>
+				<Card>
+					<Typography>Add Comment:</Typography>
+					<Typography variant="h4">Log In:</Typography>
+					<FormikTextInput name="email" label="Email Adress:" />
+				</Card>
+			</Stack>
 		</Container>
 	);
 }
-
-export default Post;
