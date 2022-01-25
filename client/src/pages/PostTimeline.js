@@ -1,6 +1,6 @@
 // import Axios from "axios";
 import { Typography, Container, Stack } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Axios from "axios";
 import axiosError from "../utils/axiosError";
 import Post from "../components/Post";
@@ -8,10 +8,19 @@ import Post from "../components/Post";
 function PostTimeline() {
 	const [postData, setPostData] = useState();
 
+	// Setting state when component has been unmounted can cause errors:
+	const isMounted = useRef(false);
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
+
 	function getData() {
 		Axios.get("/api/posts/all")
 			.then(function (response) {
-				setPostData(response.data.data);
+				if (isMounted.current) setPostData(response.data.data);
 			})
 			.catch((err) => {
 				axiosError(err);

@@ -2,9 +2,18 @@ import { Typography, Button } from "@mui/material";
 import Axios from "axios";
 import axiosError from "../utils/axiosError";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function LikeButton({ data }) {
+	// Setting state when component has been unmounted can cause errors:
+	const isMounted = useRef(false);
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
+
 	//runs on first render
 	useEffect(() => {
 		getLikes();
@@ -18,8 +27,10 @@ export default function LikeButton({ data }) {
 	function getLikes() {
 		Axios.get("/api/likes/" + data.post_index)
 			.then((response) => {
-				setLiked(response.data.hasLiked);
-				setLikeCount(response.data.likeCount);
+				if (isMounted.current) {
+					setLiked(response.data.hasLiked);
+					setLikeCount(response.data.likeCount);
+				}
 			})
 			.catch((error) => {
 				axiosError(error);
