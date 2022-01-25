@@ -7,8 +7,8 @@ function NavBar() {
 			<AppBar postition="static">
 				<Container maxWidth="xl">
 					<Toolbar disableGutters>
-						<NavBarElement to="/createpost" text="Create Post"></NavBarElement>
 						<NavBarElement to="/timeline" text="Post Timeline"></NavBarElement>
+						<NavBarElement to="/createpost" text="Create Post"></NavBarElement>
 					</Toolbar>
 				</Container>
 			</AppBar>
