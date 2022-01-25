@@ -24,9 +24,7 @@ function App() {
 				</Container>
 				<Container component="main" sx={{ pt: 2 }}>
 					<Routes>
-						<Route path="/">
-							<LoadingPage />
-						</Route>
+						<Route path="/" element={<LoadingPage />} />
 						<Route path="/welcome" element={<WelcomePage />} />
 						<Route path="/signup" element={<SignUpForm />} />
 						<Route path="/login" element={<LogInForm />} />
