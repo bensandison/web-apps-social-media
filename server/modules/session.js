@@ -14,7 +14,7 @@ function createSession(req, res, next) {
 			//compare user submited password against database
 			bcrypt.compare(req.body.password, row.password, function (err, result) {
 				if (err) return next(err); //bcrypt.compare error
-				if (!result) next(new Error("Incorrect username or password")); //Incorrect Password
+				if (!result) return next(new Error("Incorrect username or password")); //Incorrect Password
 
 				if (row && !row.token) {
 					//if user has no token in DB
