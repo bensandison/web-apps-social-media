@@ -19,16 +19,15 @@ function createSession(req, res, next) {
 				if (row && !row.token) {
 					//if user has no token in DB
 					// Create an API token for the user if they dont already have one:
-					let token = UUID.v4();
+					row.token = UUID.v4();
 
 					//Store token in user db
 					const sqlRun = "UPDATE user SET token = ? WHERE id = ?";
-					db.run(sqlRun, [token, row.id], function (err) {
+					db.run(sqlRun, [row.token, row.id], function (err) {
 						if (err) return next(err);
-
-						row.token = token; //add token to user data
 					});
 				}
+				console.log(row);
 				res
 					.cookie("token", row.token, { expires: new Date(253402300000000) }) //cookie expires: Approx Friday, 31 Dec 9999 23:59:59 GMT
 					.json({ data: row }); //also respond with user data
