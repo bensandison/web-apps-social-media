@@ -18,6 +18,7 @@ export default function LoadingPage() {
 	const [loggedIn, setLoggedIn] = useState(false);
 
 	function getData() {
+		if (document.cookie) return setLoading(false);
 		Axios.get("/api/posts/all")
 			.then(function () {
 				// User is logged in:
@@ -28,7 +29,6 @@ export default function LoadingPage() {
 			})
 			.catch((err) => {
 				if (isMounted.current) {
-					setLoggedIn(false);
 					setLoading(false);
 				}
 			});
