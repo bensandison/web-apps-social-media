@@ -1,7 +1,6 @@
 import { CircularProgress, Typography, Stack } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import Axios from "axios";
-import axiosError from "../utils/axiosError";
 import { Navigate } from "react-router-dom";
 
 export default function LoadingPage() {
