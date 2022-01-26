@@ -1,4 +1,4 @@
-import { Container, CircularProgress, Box } from "@mui/material";
+import { Container } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import LoadingPage from "./pages/loadingPage";

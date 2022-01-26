@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography, Stack } from "@mui/material";
+import { CircularProgress, Typography, Stack } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import Axios from "axios";
 import axiosError from "../utils/axiosError";
@@ -27,8 +27,6 @@ export default function LoadingPage() {
 				}
 			})
 			.catch((err) => {
-				// Login failed:
-				axiosError(err);
 				if (isMounted.current) {
 					setLoggedIn(false);
 					setLoading(false);
