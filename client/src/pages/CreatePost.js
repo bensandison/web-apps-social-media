@@ -52,6 +52,12 @@ const CreatePost = (props) => {
 				validationSchema={yup.object().shape({
 					title: yup.string().required("Post title required"),
 					body: yup.string().required("Post body required"),
+					tags: yup
+						.string()
+						.matches(
+							/^(?:#)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:(?!))){0,28}(?:[A-Za-z0-9_]))?)((?: #)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?))*\s?$/g,
+							"Must be hashtags seperated by spaces"
+						),
 					file: yup.mixed(),
 				})}
 			>
@@ -60,13 +66,18 @@ const CreatePost = (props) => {
 						<form onSubmit={handleSubmit}>
 							<Stack spacing={2}>
 								<Typography variant="h4">Create Post</Typography>
-								<FormikTextInput name="title" label="Post Title:" />
+								<FormikTextInput name="title" label="Title:" />
 								<FormikTextInput
 									name="body"
-									label="Post Body:"
+									label="PosdBody:"
 									multiline
 									minRows={5}
 									maxRows={20}
+								/>
+								<FormikTextInput
+									name="tags"
+									label="Tags:"
+									placeholder="#meme #cool"
 								/>
 								<Stack className="image-upload-controls" spacing={2}>
 									<Button
