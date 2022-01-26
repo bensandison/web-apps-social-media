@@ -1,9 +1,11 @@
 import { Formik, Form } from "formik";
 import Axios from "axios";
 import * as Yup from "yup";
-
 import FormikTextInput from "../components/FormikTextInput";
 import { Button, Container, Stack, Typography } from "@mui/material";
+import axiosError from "../utils/axiosError";
+import { Navigate } from "react-router-dom";
+import { useState } from "react";
 
 const initialFormState = {
 	name: "",
@@ -22,39 +24,49 @@ const yupSchema = Yup.object({
 		.max(30, "30 characters or less required"),
 });
 
-function submitData(values) {
+function submitSignup(values, success) {
 	setTimeout(() => {
 		Axios.post("/api/users", values)
 			.then((response) => {
-				console.log(response);
+				success();
 			})
 			.catch(function (error) {
-				if (error.response) {
-					// Request made and server responded
-					console.log(error.response.data);
-					console.log(error.response.status);
-					console.log(error.response.headers);
-				} else if (error.request) {
-					// The request was made but no response was received
-					console.log(error.request);
-				} else {
-					// Something happened in setting up the request that triggered an Error
-					console.log("Error", error.message);
-				}
+				axiosError(error);
 			});
-		// setSubmitting(false);
+	}, 400);
+}
+
+function submitLogin(values, success) {
+	setTimeout(() => {
+		Axios.post("/api/session", values)
+			.then((response) => {
+				console.log(response);
+				success();
+			})
+			.catch((error) => {
+				axiosError(error);
+			});
 	}, 400);
 }
 
 // And now we can use these
 function SignUpForm() {
+	const [signedUp, setSignedUp] = useState(false);
+	// Once user has logged in go to timeline
+	if (signedUp) return <Navigate to="/timeline" />;
+
 	return (
 		<Container maxWidth="xs">
 			<Formik
 				initialValues={{ ...initialFormState }}
 				validationSchema={yupSchema}
 				onSubmit={(values) => {
-					submitData(values);
+					submitSignup(values, () => {
+						// Callback fn called on signup sucess:
+						submitLogin(values, () => {
+							setSignedUp(true);
+						});
+					});
 				}}
 			>
 				<Form>
