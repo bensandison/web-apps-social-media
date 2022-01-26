@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import FormikTextInput from "../components/FormikTextInput";
 import axiosError from "../utils/axiosError";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const initialFormState = {
 	email: "",
@@ -18,11 +20,12 @@ const yupSchema = Yup.object({
 		.max(30, "30 characters or less required"),
 });
 
-function submitData(values) {
+function submitData(values, success) {
 	setTimeout(() => {
 		Axios.post("/api/session", values)
 			.then((response) => {
 				console.log(response);
+				success();
 			})
 			.catch((error) => {
 				axiosError(error);
@@ -33,13 +36,19 @@ function submitData(values) {
 
 // And now we can use these
 function LogInForm() {
+	const [loggedIn, setLoggedIn] = useState(false);
+	// Once user has logged in go to timeline
+	if (loggedIn) return <Navigate to="/timeline" />;
+
 	return (
 		<Container maxWidth="xs">
 			<Formik
 				initialValues={{ ...initialFormState }}
 				validationSchema={yupSchema}
 				onSubmit={(values) => {
-					submitData(values);
+					submitData(values, () => {
+						setLoggedIn(true);
+					});
 				}}
 			>
 				<Form>
