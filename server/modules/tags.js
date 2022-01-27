@@ -23,12 +23,12 @@ function findTagsInArray(tagsArray, cb) {
 	});
 }
 
-function insertMany(tagsArray, callback) {
+function insertMultiTags(tagsArray, callback) {
 	// Insert multiple tags to db:
 	let query = `INSERT INTO tags ( tag ) VALUES ${tagsArray
 		.map(() => "( ?")
 		.join(" ), ")} )`;
-	db.run(query, tagsArray, callback);
+	db.run(query, tagsArray, (err, result) => callback(err, result));
 }
 
 function addTags(req, res, next) {
@@ -42,6 +42,7 @@ function addTags(req, res, next) {
 		const tagsArr = seperateTags(req.body.tags);
 		if (!tagsArr.length) return next(new Error("Tags array empty"));
 
+		// tags table:
 		// Which of these tags already exist in db:
 		findTagsInArray(tagsArr, (err, result) => {
 			if (err) return next(err);
@@ -51,10 +52,23 @@ function addTags(req, res, next) {
 			// Filter for tags that are not in db
 			let uniqueTags = tagsArr.filter((item) => !dbTags.has(item));
 
-			console.log("all:");
-			console.log(tagsArr);
-			console.log("unique");
-			console.log(uniqueTags);
+			if (uniqueTags.length) {
+				insertMultiTags(uniqueTags, (err, result) => {
+					if (err) return next(err);
+
+					// Now to insert tag id's into post tags db:
+					// Getting tag id's:
+					let query = `SELECT * FROM tags WHERE tag IN ( ${tagsArr
+						.map(() => "?")
+						.join(",")} )`;
+					db.all(query, tagsArr, (err, result) => {
+						if (err) return next(err);
+
+						console.log(tagsArray);
+						console.log(result);
+					});
+				});
+			}
 		});
 	});
 }
