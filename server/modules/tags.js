@@ -2,14 +2,8 @@ const { findByToken } = require("./utils");
 
 function seperateTags(tags) {
 	// Split tags at "#"
-	tags = tags.split("#");
-
-	let tagsArr = [];
-	tags.map((i) => {
-		if (i) {
-			// Removes empty space from tags array
-			tagsArr.push(i);
-		}
+	tagsArr = tags.split("#").filter((el) => {
+		return el.length != 0;
 	});
 
 	return tagsArr;
