@@ -2,10 +2,10 @@ const db = require("./database");
 const { findByToken } = require("./utils");
 
 function seperateTags(tags) {
-	// Prepend space to tags
-	tags = " " + tags;
 	// Split tags at " #"
-	tagsArr = tags.split(" #");
+	let tagsArr = tags.split(/#|\s#/g);
+	// remove first element if empty
+	if (!tagsArr[0]) tagsArr = tagsArr.splice(1, tagsArr.length);
 
 	return tagsArr;
 }
