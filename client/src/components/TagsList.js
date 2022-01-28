@@ -18,8 +18,6 @@ export default function TagsList({ postID }) {
 	function getTags() {
 		Axios.get("/api/tags/" + postID)
 			.then(function (response) {
-				console.log(postID);
-				console.log(response.data);
 				if (isMounted.current) setTagData(response.data);
 			})
 			.catch((err) => {

@@ -19,7 +19,9 @@ const CreatePost = (props) => {
 		setTimeout(() => {
 			Axios.post("/api/posts", formData)
 				.then((response) => {
-					submitTags(response.data.postID);
+					// Check tags exist
+					if (values.tags !== "") submitTags(response.data.postID);
+					return;
 				})
 				.catch(function (error) {
 					axiosError(error);
@@ -29,6 +31,7 @@ const CreatePost = (props) => {
 		function submitTags(postID) {
 			// Tags form:
 			setTimeout(() => {
+				// Submit tags and postID
 				Axios.post("/api/tags/" + postID, { tags: values.tags })
 					.then((response) => {
 						console.log(response);
