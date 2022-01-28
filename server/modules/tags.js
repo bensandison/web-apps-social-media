@@ -94,9 +94,9 @@ function getTags(req, res, next) {
 
 		// Get tags from specified post ID
 		const query =
-			"SELECT tag FROM " +
+			"SELECT tag, tag_id FROM " +
 			// Match tags to post_id:
-			"(SELECT tag, post_id from tags INNER JOIN post_tags ON post_tags.tag_id = tags.id) " +
+			"(SELECT tag, post_id, tag_id from tags INNER JOIN post_tags ON post_tags.tag_id = tags.id) " +
 			"WHERE post_id = ?";
 		db.all(query, req.params.postID, (err, result) => {
 			if (err) return next(err);
@@ -104,10 +104,11 @@ function getTags(req, res, next) {
 			if (!result || !result.length) res.json([]);
 
 			// Add to array
-			const tagsArr = result.map((el) => el.tag);
-			res.json(tagsArr);
+			res.json(result);
 		});
 	});
 }
+
+function getPostWithTag(req, res, next) {}
 
 module.exports = { addTags, getTags };
