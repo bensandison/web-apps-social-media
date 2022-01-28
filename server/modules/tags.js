@@ -24,11 +24,13 @@ function findTagsInArray(tagsArray, cb) {
 }
 
 function insertMultiTags(tagsArray, callback) {
+	if (!tagsArray.length) return callback(null);
+
 	// Insert multiple tags to db:
 	let query = `INSERT INTO tags ( tag ) VALUES ${tagsArray
 		.map(() => "( ?")
 		.join(" ), ")} )`;
-	db.run(query, tagsArray, (err, result) => callback(err, result));
+	db.run(query, tagsArray, (err) => callback(err));
 }
 
 function addTags(req, res, next) {
@@ -52,23 +54,34 @@ function addTags(req, res, next) {
 			// Filter for tags that are not in db
 			let uniqueTags = tagsArr.filter((item) => !dbTags.has(item));
 
-			if (uniqueTags.length) {
-				insertMultiTags(uniqueTags, (err, result) => {
+			// insert if there are unique tags
+			insertMultiTags(uniqueTags, (err) => {
+				if (err) return next(err);
+
+				// Now to insert tag id's into post tags db:
+				// Getting tag id's:
+				let query = `SELECT id FROM tags WHERE tag IN ( ${tagsArr
+					.map(() => "?")
+					.join(",")} )`;
+				db.all(query, tagsArr, (err, result) => {
 					if (err) return next(err);
 
-					// Now to insert tag id's into post tags db:
-					// Getting tag id's:
-					let query = `SELECT * FROM tags WHERE tag IN ( ${tagsArr
-						.map(() => "?")
-						.join(",")} )`;
-					db.all(query, tagsArr, (err, result) => {
+					const placeholders = result.map(() => "(?, ?)").join(", ");
+					const query =
+						"INSERT INTO post_tags (tag_id, post_id) VALUES " + placeholders;
+					let values = [];
+					result.forEach((item) => {
+						values.push(item.id);
+						values.push(req.params.postID);
+					});
+
+					db.run(query, values, (err) => {
 						if (err) return next(err);
 
-						console.log(tagsArray);
-						console.log(result);
+						res.json({ message: "success" });
 					});
 				});
-			}
+			});
 		});
 	});
 }
