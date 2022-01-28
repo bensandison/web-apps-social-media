@@ -27,9 +27,9 @@ function createPost(req, res, next) {
 		db.run(
 			"INSERT INTO posts (user_id, user_name, title, body, image_name) VALUES (?,?,?,?,?)",
 			[data.userID, data.userName, data.title, data.body, data.imageName],
-			function (err) {
+			function (err, result) {
 				if (err) return next(err);
-				res.json({ data: data });
+				res.json({ postID: this.lastID });
 			}
 		);
 	});
