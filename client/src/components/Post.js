@@ -1,6 +1,7 @@
 import { Typography, Container, Card, Stack, Avatar } from "@mui/material";
 import LikeButton from "./LikeButton";
 import CommentButton from "./CommentButton";
+import TagsList from "./TagsList";
 
 function Post({ data }) {
 	return (
@@ -20,6 +21,7 @@ function Post({ data }) {
 				</Stack>
 				<Typography variant="h5">{data.title}</Typography>
 				<Typography variant="body1">{data.body}</Typography>
+				<TagsList postID={data.post_index} />
 				{data.image_name && (
 					//if image provided:
 					<img
