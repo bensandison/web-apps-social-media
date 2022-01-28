@@ -86,4 +86,28 @@ function addTags(req, res, next) {
 	});
 }
 
-module.exports = { addTags };
+function getTags(req, res, next) {
+	if (!req.params.postID) return next("No postID provided");
+
+	findByToken(req.cookies.token, (err, userData) => {
+		if (err) return next(err);
+
+		// Get tags from specified post ID
+		const query =
+			"SELECT tag FROM " +
+			// Match tags to post_id:
+			"(SELECT tag, post_id from tags INNER JOIN post_tags ON post_tags.tag_id = tags.id) " +
+			"WHERE post_id = ?";
+		db.all(query, req.params.postID, (err, result) => {
+			if (err) return next(err);
+			// If no results, res empty array so we dont cause errors
+			if (!result || !result.length) res.json([]);
+
+			// Add to array
+			const tagsArr = result.map((el) => el.tag);
+			res.json(tagsArr);
+		});
+	});
+}
+
+module.exports = { addTags, getTags };
