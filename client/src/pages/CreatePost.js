@@ -5,6 +5,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { Stack, Button, Typography, Container } from "@mui/material";
 import FormikTextInput from "../components/FormikTextInput";
+import axiosError from "../utils/axiosError";
 
 const CreatePost = (props) => {
 	function submitData(values) {
@@ -14,27 +15,29 @@ const CreatePost = (props) => {
 		formData.append("body", values.body);
 		formData.append("image", values.file);
 
+		// Standard form:
 		setTimeout(() => {
 			Axios.post("/api/posts", formData)
 				.then((response) => {
-					console.log(response);
+					submitTags(response.data.postID);
 				})
 				.catch(function (error) {
-					//Error handling:
-					if (error.response) {
-						// Request made and server responded
-						console.log(error.response.data);
-						console.log(error.response.status);
-						console.log(error.response.headers);
-					} else if (error.request) {
-						// The request was made but no response was received
-						console.log(error.request);
-					} else {
-						// Something happened in setting up the request that triggered an Error
-						console.log("Error", error.message);
-					}
+					axiosError(error);
 				});
 		}, 400);
+
+		function submitTags(postID) {
+			// Tags form:
+			setTimeout(() => {
+				Axios.post("/api/tags/" + postID, { tags: values.tags })
+					.then((response) => {
+						console.log(response);
+					})
+					.catch(function (error) {
+						axiosError(error);
+					});
+			}, 400);
+		}
 	}
 
 	return (
@@ -43,6 +46,7 @@ const CreatePost = (props) => {
 				initialValues={{
 					title: "",
 					body: "",
+					tags: "",
 					file: null,
 				}}
 				onSubmit={(values) => {
@@ -69,7 +73,7 @@ const CreatePost = (props) => {
 								<FormikTextInput name="title" label="Title:" />
 								<FormikTextInput
 									name="body"
-									label="PosdBody:"
+									label="Post Body:"
 									multiline
 									minRows={5}
 									maxRows={20}
