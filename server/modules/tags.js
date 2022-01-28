@@ -34,7 +34,8 @@ function insertMultiTags(tagsArray, callback) {
 }
 
 function addTags(req, res, next) {
-	if (!req.body.tags) return next(new Error("Tags are missing"));
+	if (!req.body.tags || req.body.tags == "")
+		return next(new Error("Tags are missing"));
 	if (!req.params.postID) return next(new Error("post ID is missing"));
 
 	findByToken(req.cookies.token, (err, userData) => {
