@@ -100,8 +100,6 @@ function getTags(req, res, next) {
 			"WHERE post_id = ?";
 		db.all(query, req.params.postID, (err, result) => {
 			if (err) return next(err);
-			// If no results, res empty array so we dont cause errors
-			if (!result || !result.length) res.json([]);
 
 			// Add to array
 			res.json(result);
@@ -109,6 +107,24 @@ function getTags(req, res, next) {
 	});
 }
 
-function getPostWithTag(req, res, next) {}
+function getPostWithTag(req, res, next) {
+	// Accept tag as ID, return array of all posts with this tag:
+	if (!req.params.tagID) return next("No postID provided");
 
-module.exports = { addTags, getTags };
+	findByToken(req.cookies.token, (err, userData) => {
+		if (err) return next(err);
+
+		db.all(
+			"SELECT post_id FROM post_tags WHERE tag_id = ?",
+			req.params.tagID,
+			(err, result) => {
+				if (err) return next(err);
+
+				// Return posts with this tag as array:
+				res.json(result.map((el) => el.post_id));
+			}
+		);
+	});
+}
+
+module.exports = { addTags, getTags, getPostWithTag };

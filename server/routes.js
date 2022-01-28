@@ -20,7 +20,7 @@ const {
 	deleteComment,
 	addComment,
 } = require("./modules/comments");
-const { addTags, getTags } = require("./modules/tags");
+const { addTags, getTags, getPostWithTag } = require("./modules/tags");
 
 const express = require("express");
 const router = express.Router();
@@ -55,6 +55,7 @@ router.delete("/comments/:commentID", deleteComment);
 
 // Tags
 router.post("/tags/:postID", addTags);
+router.get("/tags/posts/:tagID", getPostWithTag);
 router.get("/tags/:postID", getTags);
 
 module.exports = router;
