@@ -2,6 +2,7 @@ import { Button, Typography } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import Axios from "axios";
 import axiosError from "../utils/axiosError";
+import { Link } from "react-router-dom";
 
 export default function TagsList({ postID }) {
 	const [tagData, setTagData] = useState([]);
@@ -33,7 +34,9 @@ export default function TagsList({ postID }) {
 	return (
 		<div>
 			{tagData.map((el, index) => (
-				<Button key={index}>{"#" + el.tag}</Button>
+				<Button key={index} to="/tag" component={Link} state={{ el }}>
+					{"#" + el.tag}
+				</Button>
 			))}
 		</div>
 	);
