@@ -64,6 +64,7 @@ function addTags(req, res, next) {
 				let query = `SELECT id FROM tags WHERE tag IN ( ${tagsArr
 					.map(() => "?")
 					.join(",")} )`;
+				console.log(query);
 				db.all(query, tagsArr, (err, result) => {
 					if (err) return next(err);
 
@@ -88,7 +89,7 @@ function addTags(req, res, next) {
 }
 
 function getTags(req, res, next) {
-	if (!req.params.postID) return next("No postID provided");
+	if (!req.params.postID) return next(new Error("No postID provided"));
 
 	findByToken(req.cookies.token, (err, userData) => {
 		if (err) return next(err);
@@ -110,7 +111,7 @@ function getTags(req, res, next) {
 
 function getPostWithTag(req, res, next) {
 	// Accept tag as ID, return array of all posts with this tag:
-	if (!req.params.tagID) return next("No postID provided");
+	if (!req.params.tagID) return next(new Error("No postID provided"));
 
 	findByToken(req.cookies.token, (err, userData) => {
 		if (err) return next(err);
@@ -120,9 +121,19 @@ function getPostWithTag(req, res, next) {
 			req.params.tagID,
 			(err, result) => {
 				if (err) return next(err);
+				// If no results return an empty array
+				if (!result.length) return res.json([]);
 
-				// Return posts with this tag as array:
-				res.json(result.map((el) => el.post_id));
+				// Get post data from post ID's
+				const postIDs = result.map((el) => el.post_id);
+				const query = `SELECT * FROM posts WHERE${postIDs
+					.map(() => " post_index = ? ")
+					.join("OR")} `;
+				db.all(query, postIDs, (err, result) => {
+					if (err) return next(err);
+					// return postIDs as array
+					res.json(result);
+				});
 			}
 		);
 	});
