@@ -8,6 +8,7 @@ import SignUpForm from "./pages/SignUpForm";
 import CreatePost from "./pages/CreatePost";
 import PostTimeline from "./pages/PostTimeline";
 import PostView from "./pages/PostView";
+import UsedTags from "./pages/UsedTags";
 
 function App() {
 	return (
@@ -31,6 +32,7 @@ function App() {
 						<Route path="/createpost" element={<CreatePost />} />
 						<Route path="/timeline" element={<PostTimeline />} />
 						<Route path="/post" element={<PostView />} />
+						<Route path="/tag" element={<UsedTags />} />
 					</Routes>
 				</Container>
 			</Router>
