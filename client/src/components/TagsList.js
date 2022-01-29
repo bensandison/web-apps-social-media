@@ -32,8 +32,8 @@ export default function TagsList({ postID }) {
 
 	return (
 		<div>
-			{tagData.map((el) => (
-				<Button>{"#" + el.tag}</Button>
+			{tagData.map((el, index) => (
+				<Button key={index}>{"#" + el.tag}</Button>
 			))}
 		</div>
 	);
