@@ -1,16 +1,20 @@
 const bcrypt = require("bcrypt");
 const db = require("./database.js");
-const { findByToken } = require("./utils");
+const { findByToken, doesTokenExist } = require("./utils");
 const saltRounds = 10;
 
 // GET: api/users
 function getUsers(req, res, next) {
-	//TODO: Remove passwords from here
-	const sql = "select * from user";
-	let params = [];
-	db.all(sql, params, (err, rows) => {
+	doesTokenExist(req.cookies.token, (err) => {
 		if (err) return next(err);
-		res.json({ data: rows });
+
+		const sql = "select id, name, email from user";
+		let params = [];
+		db.all(sql, params, (err, rows) => {
+			if (err) return next(err);
+
+			res.json({ data: rows });
+		});
 	});
 }
 
