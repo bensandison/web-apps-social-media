@@ -20,13 +20,16 @@ function getUsers(req, res, next) {
 
 // GET: api/users/id
 function getUserById(req, res) {
-	const sql = "select * from user where id = ?";
-	let params = [req.params.id]; //ID is a special Express.js endpoint with a variable expression
-	// E.g: a request using /api/user/1 will filter the query using id = 1
-	db.get(sql, params, (err, row) => {
+	doesTokenExist(req.cookies.token, (err) => {
 		if (err) return next(err);
+		const sql = "select id, name, email from user where id = ?";
+		let params = [req.params.id]; //ID is a special Express.js endpoint with a variable expression
+		// E.g: a request using /api/user/1 will filter the query using id = 1
+		db.get(sql, params, (err, row) => {
+			if (err) return next(err);
 
-		res.json({ data: row });
+			res.json({ data: row });
+		});
 	});
 }
 
@@ -71,36 +74,42 @@ function createUser(req, res, next) {
 	});
 }
 
-// PATCH: /api/users/:id
+// PATCH: /api/users
 function updateUser(req, res, next) {
-	const data = {
-		name: req.body.name,
-		email: req.body.email,
-	};
+	getUserById(req.cookies.token, (err, userData) => {
+		if (err) return next(err);
+		const data = {
+			name: req.body.name,
+			email: req.body.email,
+		};
 
-	if (!data.name && !data.email)
-		return next(new Error("new name OR email must be specified"));
+		if (!data.name && !data.email)
+			return next(new Error("new name OR email must be specified"));
 
-	// COALESENCE function returns the first argument that is not null
-	db.run(
-		`UPDATE user set name = COALESCE(?,name), email = COALESCE(?,email) WHERE id = ?`,
-		[data.name, data.email, req.params.id],
-		function (err) {
-			if (err) return next(err);
-			res.json({
-				data: data,
-				changes: this.changes, //number of rows updated (can be used for verification)
-			});
-		}
-	);
+		// COALESENCE function returns the first argument that is not null
+		db.run(
+			`UPDATE user set name = COALESCE(?,name), email = COALESCE(?,email) WHERE id = ?`,
+			[data.name, data.email, userData.id],
+			function (err) {
+				if (err) return next(err);
+				res.json({
+					data: data,
+					changes: this.changes, //number of rows updated (can be used for verification)
+				});
+			}
+		);
+	});
 }
 
 // DELETE: /api/users/id
 function deleteUser(req, res, next) {
-	db.run("DELETE FROM user WHERE id = ?", req.params.id, function (err) {
+	getUserById(req.cookies.token, (err, userData) => {
 		if (err) return next(err);
-		res.json({
-			changes: this.changes, //If the user was already deleted, or the id was not found, the value will be 0
+		db.run("DELETE FROM user WHERE id = ?", userData.id, function (err) {
+			if (err) return next(err);
+			res.json({
+				changes: this.changes, //If the user was already deleted, or the id was not found, the value will be 0
+			});
 		});
 	});
 }
