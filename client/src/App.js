@@ -13,6 +13,7 @@ import UsedTags from "./pages/UsedTags";
 function App() {
 	return (
 		<Container
+			sx={{ p: 0, m: 0 }}
 			style={{
 				backgroundColor: "#f5f5f5",
 				minHeight: "100vh",
@@ -23,7 +24,7 @@ function App() {
 				<Container component="nav">
 					<NavBar></NavBar>
 				</Container>
-				<Container component="main" sx={{ pt: 2 }}>
+				<Container component="main" sx={{ m: 0, p: 0, py: 2 }}>
 					<Routes>
 						<Route path="/" element={<LoadingPage />} />
 						<Route path="/welcome" element={<WelcomePage />} />
