@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const db = require("./database.js");
-saltRounds = 10;
+const { findByToken } = require("./utils");
+const saltRounds = 10;
 
 // GET: api/users
 function getUsers(req, res, next) {
@@ -96,6 +97,40 @@ function deleteUser(req, res, next) {
 		if (err) return next(err);
 		res.json({
 			changes: this.changes, //If the user was already deleted, or the id was not found, the value will be 0
+		});
+	});
+}
+
+// UNSAFE:
+// NO EMAIL VERIFICATION
+function updatePassword(req, res, next) {
+	const newPassword = req.body.password;
+	if (!newPassword) return next(new Error("New password not provided"));
+
+	findByToken(req.cookie.token, (err, userData) => {
+		if (err) return next(err);
+
+		/*
+		!!!!
+		HERE WE WOULD NEED TO VERIFY THE USER THROUGH 2FA (respond to email)
+		!!!!
+		*/
+
+		// hash newPassword:
+		bcrypt.hash(newPassword, saltRounds, function (err, hash) {
+			if (err) return next(err);
+			// Add pw to db:
+			db.run(
+				`UPDATE user set password = ? WHERE id = ?`,
+				[hash, userData.id],
+				function (err) {
+					if (err) return next(err);
+					res.json({
+						message: "pw change success",
+						changes: this.changes, //number of rows updated (can be used for verification)
+					});
+				}
+			);
 		});
 	});
 }
