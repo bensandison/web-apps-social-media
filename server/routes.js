@@ -8,7 +8,7 @@ const {
 const { createSession, getUserByToken } = require("./modules/session");
 const {
 	createPost,
-	totalPosts,
+	getStartIndex,
 	getPosts,
 	getAllPosts,
 } = require("./modules/posts");
@@ -38,7 +38,7 @@ router.get("/session", getUserByToken);
 
 //Posts Route
 router.post("/posts", upload.single("image"), createPost);
-router.get("/posts/last", totalPosts);
+router.get("/posts/start", getStartIndex);
 router.get("/posts", getPosts);
 router.get("/posts/all", getAllPosts);
 

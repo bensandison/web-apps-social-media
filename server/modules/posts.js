@@ -36,7 +36,7 @@ function createPost(req, res, next) {
 }
 
 //returns the index of the most recent post:
-function totalPosts(req, res, next) {
+function getStartIndex(req, res, next) {
 	//error is thrown if the token does not exist
 	doesTokenExist(req.cookies.token, function (err, result) {
 		if (err) return next(err);
@@ -48,38 +48,44 @@ function totalPosts(req, res, next) {
 			function (err, result) {
 				if (err) return next(err);
 				//return index of most recent post
-				res.json({ data: result.post_index });
+				res.json({ startIndex: result.post_index });
 			}
 		);
 	});
 }
 
-//get a range of posts from a maximum index and number of posts:
+// get up to 10 posts starting at the index provided:
+// use getStartIndex to get the index of the first post:
 function getPosts(req, res, next) {
-	//error is thrown if the token does not exist
+	if (!req.body.startIndex) return next(new Error("No startIndex provided"));
+
+	// Number of posts to be returned:
+	const postsNum = 10;
+
 	doesTokenExist(req.cookies.token, function (err) {
+		//error is thrown if the token does not exist
 		if (err) return next(err);
 
-		// calculate offset for sql query
-		const offset = req.body.indexMax - req.body.postsNum;
-		// nested select statement to order posts descending:
 		db.all(
-			"SELECT * FROM ( SELECT * FROM posts ORDER BY post_index LIMIT ? OFFSET ? ) ORDER BY post_index DESC",
-			[req.body.postsNum, offset],
+			"SELECT * FROM ( SELECT * FROM ( SELECT * FROM posts WHERE post_index <= ? ) LIMIT ? ) ORDER BY post_index DESC",
+			[req.body.startIndex, postsNum],
 			function (err, result) {
 				if (err) {
-					//check params exist:
-					if (!req.body.postsNum || !req.body.indexMax)
-						return next(new Error("Missing parameters"));
-					else return next(err);
+					return next(err);
 				}
-				res.json({ data: result }); //respond with posts
+
+				res.json({
+					data: result,
+					startIndex: result.at(-1).post_index, // .at(-1) gets last element in the array
+				}); //respond with posts
+				// startIndex can be passed to getPosts again to get the next batch of 10 posts
 			}
 		);
 	});
 }
 
 //get a all posts:
+// Now using getPosts (to get small batches at a time)
 function getAllPosts(req, res, next) {
 	// Check the user has a valid session:
 	doesTokenExist(req.cookies.token, function (err) {
@@ -96,4 +102,9 @@ function getAllPosts(req, res, next) {
 	});
 }
 
-module.exports = { createPost, totalPosts, getPosts, getAllPosts };
+module.exports = {
+	createPost,
+	getStartIndex,
+	getPosts,
+	getAllPosts,
+};
