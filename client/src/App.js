@@ -24,7 +24,7 @@ function App() {
 				<Container component="nav">
 					<NavBar></NavBar>
 				</Container>
-				<Container component="main" sx={{ m: 0, p: 0, py: 2 }}>
+				<Container component="main" sx={{ p: 0, py: 2 }}>
 					<Routes>
 						<Route path="/" element={<LoadingPage />} />
 						<Route path="/welcome" element={<WelcomePage />} />
