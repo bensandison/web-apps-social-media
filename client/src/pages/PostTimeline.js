@@ -19,6 +19,8 @@ function PostTimeline() {
 		};
 	}, []);
 
+	// TODO: this gets all the posts at once which could become slow.
+	// Upgrade to only get a batch at a time
 	function getData() {
 		Axios.get("/api/posts/all")
 			.then(function (response) {
