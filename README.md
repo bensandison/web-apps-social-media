@@ -2,6 +2,8 @@
 
 social media react site
 
+use MAIN branch!!!
+
 In /server and /client:
 `npm i`
 then:
