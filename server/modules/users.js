@@ -19,7 +19,7 @@ function getUsers(req, res, next) {
 }
 
 // GET: api/users/id
-function getUserById(req, res) {
+function getUserById(req, res, next) {
 	doesTokenExist(req.cookies.token, (err) => {
 		if (err) return next(err);
 		const sql = "select id, name, email from user where id = ?";

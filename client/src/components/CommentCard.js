@@ -5,7 +5,7 @@ import axiosError from "../utils/axiosError";
 
 export default function CommentCard({ data }) {
 	// Store user data from comment author:
-	const [userData, setUserData] = useState({});
+	const [userData, setUserData] = useState();
 
 	// Setting state when component has been unmounted can cause errors:
 	const isMounted = useRef(false);
@@ -17,7 +17,7 @@ export default function CommentCard({ data }) {
 	}, []);
 
 	function getUserData() {
-		Axios.get("/api/users/3")
+		Axios.get("/api/users/" + data.userId)
 			.then(function (response) {
 				if (isMounted.current) setUserData(response.data.data);
 			})
@@ -44,7 +44,7 @@ export default function CommentCard({ data }) {
 					variant="square"
 				/>
 				<Typography variant="subtitle" sx={{ py: "auto" }}>
-					{userData.name}
+					{userData ? userData.name : ""}
 				</Typography>
 			</Stack>
 
