@@ -57,7 +57,8 @@ function getStartIndex(req, res, next) {
 // get up to 10 posts starting at the index provided:
 // use getStartIndex to get the index of the first post:
 function getPosts(req, res, next) {
-	if (!req.body.startIndex) return next(new Error("No startIndex provided"));
+	console.log(req);
+	if (!req.params.startIndex) return next(new Error("No startIndex provided"));
 
 	// Number of posts to be returned:
 	const postsNum = 10;
@@ -68,7 +69,7 @@ function getPosts(req, res, next) {
 
 		db.all(
 			"SELECT * FROM ( SELECT * FROM ( SELECT * FROM posts WHERE post_index <= ? ) LIMIT ? ) ORDER BY post_index DESC",
-			[req.body.startIndex, postsNum],
+			[req.params.startIndex, postsNum],
 			function (err, result) {
 				if (err) {
 					return next(err);

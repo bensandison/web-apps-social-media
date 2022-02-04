@@ -7,7 +7,7 @@ import Post from "../components/Post";
 import ContentStatus from "../components/contentStatuus";
 
 function PostTimeline() {
-	const [postData, setPostData] = useState();
+	const [postData, setPostData] = useState([]);
 	const [loading, setLoading] = useState(true);
 
 	// Setting state when component has been unmounted can cause errors:
@@ -19,11 +19,28 @@ function PostTimeline() {
 		};
 	}, []);
 
+	let startIndex;
+	function getStartIndex() {
+		Axios.get("/api/posts/start")
+			.then(function (response) {
+				startIndex = response.data.startIndex;
+			})
+			.catch((err) => {
+				axiosError(err);
+			});
+	}
+
 	function getData() {
-		Axios.get("/api/posts/all")
+		setLoading(true);
+		// If we dont have a start index find one using getStartIndex
+		if (!startIndex) getStartIndex();
+		// Get batch of posts
+		Axios.get("/api/posts/" + 10)
 			.then(function (response) {
 				if (isMounted.current) {
-					setPostData(response.data.data);
+					// Set post data by concatenating old and new arrays:
+					setPostData((oldArray) => [...oldArray, ...response.data.data]);
+					startIndex = response.data.startIndex;
 					setLoading(false);
 				}
 			})
